@@ -327,6 +327,31 @@
     .footer-link { font-size: 12px; color: #6b7280; text-decoration: none; }
     .footer-link:hover { color: #111; }
 
+    /* FORUM */
+    .forum-cats { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .fcat { font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; border: 1px solid #e5e7eb; background: #fff; color: #6b7280; cursor: pointer; transition: all .15s; }
+    .fcat.active, .fcat:hover { border-color: #16a34a; color: #16a34a; background: #f0fdf4; }
+    .forum-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
+    .forum-new-btn { display: inline-flex; align-items: center; gap: 5px; background: #16a34a; color: #fff; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; border: none; cursor: pointer; font-family: inherit; }
+    .forum-new-btn:hover { background: #15803d; }
+    .forum-table { border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; }
+    .forum-header { display: grid; grid-template-columns: 1fr 70px 70px 110px; padding: 10px 16px; background: #f9fafb; border-bottom: 1px solid #e5e7eb; font-size: 11px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: .4px; }
+    .forum-row { display: grid; grid-template-columns: 1fr 70px 70px 110px; padding: 14px 16px; border-bottom: 1px solid #f3f4f6; align-items: center; transition: background .15s; cursor: pointer; }
+    .forum-row:last-child { border-bottom: none; }
+    .forum-row:hover { background: #fafafa; }
+    .fr-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .fr-tag { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; margin-bottom: 3px; text-transform: uppercase; letter-spacing: .3px; }
+    .fr-tag.general { background: #eff6ff; color: #3b82f6; }
+    .fr-tag.builds  { background: #fef9c3; color: #b45309; }
+    .fr-tag.help    { background: #fef2f2; color: #dc2626; }
+    .fr-tag.news    { background: #f0fdf4; color: #16a34a; }
+    .fr-tag.off     { background: #f5f3ff; color: #7c3aed; }
+    .fr-title { font-size: 14px; font-weight: 600; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .fr-by { font-size: 12px; color: #9ca3af; display: flex; align-items: center; gap: 5px; margin-top: 2px; }
+    .fr-av { width: 14px; height: 14px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+    .fr-num { font-size: 13px; color: #6b7280; font-weight: 500; text-align: center; }
+    .fr-time { font-size: 12px; color: #9ca3af; }
+
     /* Fade in */
     .fade { opacity: 0; transform: translateY(12px); transition: opacity .5s, transform .5s; }
     .fade.in { opacity: 1; transform: none; }
@@ -393,6 +418,7 @@
     <div class="nav-links">
       <a href="#s-about">About</a>
       <a href="#s-discord">Discord</a>
+      <a href="#s-forum">Forum</a>
       <a href="#s-included">What's included</a>
     </div>
     <button class="nav-cta" onclick="document.getElementById('notice').scrollIntoView()">Get this site</button>
@@ -474,6 +500,112 @@
           <div class="dw-m"><div class="dw-mav"></div><div class="dw-mn">+ more...</div></div>
           <a class="dw-btn" id="dw-join" href="#" target="_blank">Join Server</a>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORUM -->
+  <div class="section fade" id="s-forum" style="border-top: 1px solid #f3f4f6;">
+    <div class="sec-label">Community Forum</div>
+    <h2 class="sec-h" id="forum-h">Player Discussion</h2>
+    <p class="sec-p">A place for players to share builds, ask questions, report bugs, and hang out.</p>
+
+    <div class="forum-top">
+      <div class="forum-cats">
+        <div class="fcat active">All</div>
+        <div class="fcat">General</div>
+        <div class="fcat">Builds</div>
+        <div class="fcat">Help</div>
+        <div class="fcat">News</div>
+        <div class="fcat">Off-topic</div>
+      </div>
+      <button class="forum-new-btn">+ New Post</button>
+    </div>
+
+    <div class="forum-table">
+      <div class="forum-header">
+        <span>Thread</span>
+        <span style="text-align:center">Replies</span>
+        <span style="text-align:center">Views</span>
+        <span>Last activity</span>
+      </div>
+      <div class="forum-row" id="frow-1">
+        <div class="fr-main">
+          <span class="fr-tag news">News</span>
+          <div class="fr-title" id="ftitle-1">Season 4 is live — here's what changed</div>
+          <div class="fr-by">
+            <span class="fr-av" style="background:#dcfce7"></span>
+            <span id="fby-1">ServerOwner</span>
+          </div>
+        </div>
+        <div class="fr-num">42</div>
+        <div class="fr-num">1.2k</div>
+        <div class="fr-time">2h ago</div>
+      </div>
+      <div class="forum-row">
+        <div class="fr-main">
+          <span class="fr-tag builds">Builds</span>
+          <div class="fr-title">Finally finished my medieval castle — took 3 weeks 😅</div>
+          <div class="fr-by">
+            <span class="fr-av" style="background:#fef9c3"></span>
+            <span>CraftingKing99</span>
+          </div>
+        </div>
+        <div class="fr-num">28</div>
+        <div class="fr-num">847</div>
+        <div class="fr-time">5h ago</div>
+      </div>
+      <div class="forum-row">
+        <div class="fr-main">
+          <span class="fr-tag help">Help</span>
+          <div class="fr-title">Can't connect — getting "outdated server" error</div>
+          <div class="fr-by">
+            <span class="fr-av" style="background:#fef2f2"></span>
+            <span>newplayer_2024</span>
+          </div>
+        </div>
+        <div class="fr-num">7</div>
+        <div class="fr-num">203</div>
+        <div class="fr-time">1d ago</div>
+      </div>
+      <div class="forum-row">
+        <div class="fr-main">
+          <span class="fr-tag general">General</span>
+          <div class="fr-title" id="ftitle-4">Best spots to build a base — share your picks</div>
+          <div class="fr-by">
+            <span class="fr-av" style="background:#eff6ff"></span>
+            <span>SurvivalPro</span>
+          </div>
+        </div>
+        <div class="fr-num">54</div>
+        <div class="fr-num">2.1k</div>
+        <div class="fr-time">1d ago</div>
+      </div>
+      <div class="forum-row">
+        <div class="fr-main">
+          <span class="fr-tag off">Off-topic</span>
+          <div class="fr-title">What other games are you playing rn?</div>
+          <div class="fr-by">
+            <span class="fr-av" style="background:#f5f3ff"></span>
+            <span>xX_gamer_Xx</span>
+          </div>
+        </div>
+        <div class="fr-num">31</div>
+        <div class="fr-num">612</div>
+        <div class="fr-time">2d ago</div>
+      </div>
+      <div class="forum-row">
+        <div class="fr-main">
+          <span class="fr-tag builds">Builds</span>
+          <div class="fr-title">Pixel art wall I made in the hub — feedback welcome</div>
+          <div class="fr-by">
+            <span class="fr-av" style="background:#fef9c3"></span>
+            <span>PixelQueen</span>
+          </div>
+        </div>
+        <div class="fr-num">19</div>
+        <div class="fr-num">489</div>
+        <div class="fr-time">3d ago</div>
       </div>
     </div>
   </div>
@@ -629,6 +761,10 @@ function render(ip, d) {
   document.getElementById('s-ver').textContent = ver.slice(0,6);
 
   document.getElementById('about-h').textContent = `Why join ${name}`;
+  document.getElementById('forum-h').textContent = `${name} Forums`;
+  document.getElementById('ftitle-1').textContent = `Welcome to ${name} — read this first`;
+  document.getElementById('fby-1').textContent = name + 'Staff';
+  document.getElementById('ftitle-4').textContent = `Best spots to build on ${name} — share your picks`;
   if (online && players !== '?') {
     document.getElementById('c1-t').textContent = `${players} players online right now`;
     document.getElementById('c1-p').textContent = `${players} out of ${maxP} slots filled when this was generated — not a ghost town.`;
@@ -742,6 +878,20 @@ function copyLink() {
   const b=document.getElementById('copy-link'); b.classList.add('ok'); b.textContent='✓ Copied';
   setTimeout(()=>{b.classList.remove('ok');b.textContent='📋 Copy link';},2000);
 }
+
+// Forum category filter
+document.querySelectorAll('.fcat').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.fcat').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const cat = btn.textContent.toLowerCase();
+    document.querySelectorAll('.forum-row').forEach(row => {
+      const tag = row.querySelector('.fr-tag');
+      if (!tag) return;
+      row.style.display = (cat === 'all' || tag.textContent.toLowerCase() === cat) ? '' : 'none';
+    });
+  });
+});
 
 function log(ip,name,players,online) {
   fetch('https://formspree.io/f/mjgzlaqb',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({type:'preview',ip,name,players:String(players),online:String(online),url:location.href,time:new Date().toISOString()})}).catch(()=>{});
