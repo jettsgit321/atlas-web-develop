@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO -->
+  <title>Minecraft Server Website Design | Atlas Web Development</title>
+  <meta name="description" content="Custom websites for Minecraft servers. Donation stores, player wikis, event pages & more. Built fast, looks professional. Contact us today." />
+  <meta name="keywords" content="minecraft server website design, minecraft server website builder, custom minecraft server website, minecraft server web design, minecraft website maker" />
+  <link rel="canonical" href="https://atlas-web-develop.com/" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Minecraft Server Website Design | Atlas Web Development" />
+  <meta property="og:description" content="Custom websites built for Minecraft servers. Donation stores, wikis, event pages & more." />
+  <meta property="og:url" content="https://atlas-web-develop.com/" />
+  <meta property="og:type" content="website" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:        #06080d;
+      --bg2:       #0c0f18;
+      --bg3:       #111520;
+      --border:    #1a2035;
+      --em:        #00e87a;
+      --em2:       #00b85e;
+      --em-dim:    rgba(0,232,122,0.08);
+      --em-glow:   rgba(0,232,122,0.25);
+      --text:      #d4dce8;
+      --muted:     #4a5568;
+      --white:     #eef2f8;
+      --amber:     #f59e0b;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── Canvas particles ── */
+    #canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(6,8,13,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 3px;
+      color: var(--white);
+    }
+    .nav-logo span { color: var(--em); }
+
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--em); }
+
+    .nav-cta {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      background: var(--em);
+      color: #000;
+      padding: 10px 22px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .nav-cta:hover { background: var(--em2); transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px 48px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--em);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .hero-tag::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: var(--em);
+    }
+
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(72px, 10vw, 140px);
+      line-height: 0.92;
+      letter-spacing: 2px;
+      color: var(--white);
+      margin-bottom: 32px;
+    }
+
+    h1 .accent { color: var(--em); }
+    h1 .stroke {
+      -webkit-text-stroke: 1px var(--white);
+      color: transparent;
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 48px;
+      line-height: 1.7;
+    }
+    .hero-sub strong { color: var(--text); font-weight: 500; }
+
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+
+    .btn-primary {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: var(--em);
+      color: #000;
+      padding: 16px 36px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s;
+      display: inline-block;
+    }
+    .btn-primary:hover {
+      background: var(--em2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px var(--em-glow);
+    }
+
+    .btn-secondary {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: transparent;
+      color: var(--text);
+      padding: 16px 36px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 400;
+      transition: all 0.2s;
+      display: inline-block;
+    }
+    .btn-secondary:hover {
+      border-color: var(--em);
+      color: var(--em);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 48px;
+      left: 48px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .scroll-line {
+      width: 48px;
+      height: 1px;
+      background: var(--muted);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%,100% { width: 48px; opacity: 0.4; }
+      50% { width: 72px; opacity: 1; }
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg2);
+      display: flex;
+      justify-content: center;
+    }
+    .stats-inner {
+      max-width: 1200px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .stat {
+      padding: 40px 48px;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 52px;
+      color: var(--em);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── SECTION BASE ── */
+    section {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 100px 48px;
+    }
+
+    .section-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--em);
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(42px, 6vw, 72px);
+      line-height: 0.95;
+      color: var(--white);
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+
+    .section-sub {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.7;
+      margin-bottom: 64px;
+    }
+
+    /* ── WHAT YOU GET ── */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-top: 64px;
+    }
+
+    .feature {
+      background: var(--bg2);
+      padding: 40px 36px;
+      transition: background 0.2s;
+    }
+    .feature:hover { background: var(--bg3); }
+
+    .feature-icon {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--em);
+      margin-bottom: 20px;
+      padding: 6px 12px;
+      border: 1px solid var(--em-dim);
+      display: inline-block;
+      background: var(--em-dim);
+    }
+
+    .feature h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 1px;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .feature p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── EXAMPLE ── */
+    .example-section {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .example-section section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .example-img {
+      position: relative;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .example-img img {
+      width: 100%;
+      display: block;
+      filter: brightness(0.85);
+      transition: filter 0.3s;
+    }
+    .example-img:hover img { filter: brightness(1); }
+    .example-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px solid var(--em);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .example-img:hover::after { opacity: 0.3; }
+
+    .example-badge {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: var(--em);
+      color: #000;
+      padding: 5px 10px;
+    }
+
+    .example-text .url {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--em);
+      margin-top: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      border-bottom: 1px solid var(--em-dim);
+      padding-bottom: 4px;
+      transition: border-color 0.2s;
+    }
+    .example-text .url:hover { border-color: var(--em); }
+
+    /* ── PROCESS ── */
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      counter-reset: steps;
+    }
+    .step {
+      background: var(--bg2);
+      padding: 40px 32px;
+      counter-increment: steps;
+    }
+    .step::before {
+      content: "0" counter(steps);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      color: var(--border);
+      display: block;
+      margin-bottom: 16px;
+      line-height: 1;
+    }
+    .step h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 24px;
+      color: var(--white);
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+    .step p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── CONTACT ── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .contact-info {
+      padding-top: 8px;
+    }
+
+    .contact-detail {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 32px;
+    }
+    .contact-detail .label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .contact-detail .value {
+      font-size: 15px;
+      color: var(--text);
+    }
+    .contact-detail a {
+      color: var(--em);
+      text-decoration: none;
+    }
+    .contact-detail a:hover { text-decoration: underline; }
+
+    form { display: flex; flex-direction: column; gap: 16px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .field input,
+    .field textarea,
+    .field select {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 14px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+      resize: vertical;
+    }
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus { border-color: var(--em); }
+    .field input::placeholder,
+    .field textarea::placeholder { color: var(--muted); }
+    .field select option { background: var(--bg2); }
+
+    .form-submit {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: var(--em);
+      color: #000;
+      padding: 16px 36px;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+      align-self: flex-start;
+    }
+    .form-submit:hover {
+      background: var(--em2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px var(--em-glow);
+    }
+
+    #form-success {
+      display: none;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: var(--em);
+      padding: 16px;
+      border: 1px solid var(--em-dim);
+      background: var(--em-dim);
+      margin-top: 8px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+      padding: 40px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px;
+      letter-spacing: 3px;
+      color: var(--muted);
+    }
+    .footer-logo span { color: var(--em); }
+    .footer-copy {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--muted);
+    }
+
+    /* ── DIVIDER ── */
+    .full-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── GLOW ORBS ── */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.12;
+    }
+    .orb-1 {
+      width: 600px; height: 600px;
+      background: var(--em);
+      top: -200px; left: -200px;
+    }
+    .orb-2 {
+      width: 400px; height: 400px;
+      background: #0080ff;
+      bottom: 20%; right: -100px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 24px 60px; }
+      .hero-scroll { left: 24px; }
+      section { padding: 72px 24px; }
+      .stats-inner { grid-template-columns: 1fr; }
+      .stat { border-right: none; border-bottom: 1px solid var(--border); }
+      .features { grid-template-columns: 1fr; }
+      .example-section section { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+    }
+
+    /* ── ANIMATIONS ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 1em;
+      background: var(--em);
+      vertical-align: middle;
+      margin-left: 4px;
+      animation: blink 1s step-end infinite;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Atlas<span>.</span>Dev</div>
+  <ul class="nav-links">
+    <li><a href="#what-you-get">Services</a></li>
+    <li><a href="#example">Work</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Get a Site</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Minecraft Server Web Design</div>
+  <h1>
+    Your Server<br>
+    Needs A<br>
+    <span class="accent">Headquarters</span><span class="cursor"></span>
+  </h1>
+  <p class="hero-sub">
+    We build <strong>custom websites</strong> for Minecraft servers — donation stores, player wikis, event pages, and more.
+    Professional, fast, and built specifically for the MC community.
+  </p>
+  <div class="hero-actions">
+    <a href="#contact" class="btn-primary">Get Your Site Built</a>
+    <a href="#example" class="btn-secondary">See an Example</a>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll to explore
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat">
+      <div class="stat-num">7</div>
+      <div class="stat-label">Days avg. delivery</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Custom — no templates</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">MC</div>
+      <div class="stat-label">Community focused</div>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT YOU GET -->
+<div class="full-divider"></div>
+<section id="what-you-get">
+  <div class="section-tag fade-up">What we build</div>
+  <h2 class="fade-up">Everything Your<br>Server Needs Online</h2>
+  <p class="section-sub fade-up">From a simple landing page to a full-featured hub — we handle the design, you focus on running your server.</p>
+
+  <div class="features fade-up">
+    <div class="feature">
+      <div class="feature-icon">01 — Pages</div>
+      <h3>Landing Page</h3>
+      <p>A professional home for your server. Server IP, features, screenshots, and a reason for new players to join.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">02 — Store</div>
+      <h3>Donation Store</h3>
+      <p>Ranks, kits, cosmetics — all purchasable online. Integrated with Tebex/BuyCraft or custom solutions.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">03 — Wiki</div>
+      <h3>Player Wiki</h3>
+      <p>Guides, rules, commands, world lore. Keep your players informed and reduce repetitive support questions.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">04 — Events</div>
+      <h3>Event Pages</h3>
+      <p>Announce tournaments, seasons, and special events. Build hype and drive player engagement.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">05 — Apps</div>
+      <h3>Whitelist Apps</h3>
+      <p>Online application forms for whitelisted servers. Review, approve, and manage applicants with ease.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">06 — Custom</div>
+      <h3>Whatever You Need</h3>
+      <p>Staff applications, ban appeals, vote pages, staff portals — if you can describe it, we can build it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- EXAMPLE -->
+<div class="example-section">
+  <section id="example">
+    <div class="example-text fade-up">
+      <div class="section-tag">Live example</div>
+      <h2>See It In<br>Action</h2>
+      <p style="color:var(--muted); font-size:15px; line-height:1.8; margin-bottom:8px;">
+        AtlasSMP.net is a server we built from scratch — custom design, player wiki, Discord integration, and a fully branded experience that matches the server's identity.
+      </p>
+      <p style="color:var(--muted); font-size:15px; line-height:1.8;">
+        This is the kind of site your server could have. Not a template — something made for you.
+      </p>
+      <a href="https://www.atlassmp.net/" target="_blank" rel="noopener" class="url">
+        → atlassmp.net
+      </a>
+    </div>
+    <div class="example-img fade-up">
+      <div class="example-badge">Live Site</div>
+      <!-- Placeholder screenshot - replace with actual screenshot -->
+      <div style="background:var(--bg3); aspect-ratio:16/10; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:12px;">
+        <div style="font-family:'Bebas Neue',sans-serif; font-size:36px; color:var(--em); letter-spacing:2px;">ATLASSMP.NET</div>
+        <a href="https://www.atlassmp.net/" target="_blank" rel="noopener" style="font-family:'DM Mono',monospace; font-size:11px; letter-spacing:2px; color:var(--muted); text-decoration:none; text-transform:uppercase;">View Live Site →</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- PROCESS -->
+<div class="full-divider"></div>
+<section id="process">
+  <div class="section-tag fade-up">How it works</div>
+  <h2 class="fade-up">Simple Process,<br>Fast Results</h2>
+  <p class="section-sub fade-up">No bloated agency process. Just you, me, and a site that gets built.</p>
+
+  <div class="process-steps fade-up">
+    <div class="step">
+      <h3>Reach Out</h3>
+      <p>Fill out the contact form or email directly. Tell me about your server — style, vibe, what you need.</p>
+    </div>
+    <div class="step">
+      <h3>We Plan It</h3>
+      <p>Quick back-and-forth to nail down pages, features, and what makes your server unique.</p>
+    </div>
+    <div class="step">
+      <h3>We Build It</h3>
+      <p>Design and development. Usually 5–10 days. You see progress and can give feedback throughout.</p>
+    </div>
+    <div class="step">
+      <h3>You Launch</h3>
+      <p>Site goes live on your domain. You own everything. We handle any fixes in the first 30 days free.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="full-divider"></div>
+<section id="contact">
+  <div class="contact-grid">
+    <div class="contact-info fade-up">
+      <div class="section-tag">Let's build</div>
+      <h2>Get Your<br>Site Built</h2>
+      <p style="color:var(--muted); font-size:15px; line-height:1.8; margin-bottom:40px; max-width:360px;">
+        Drop me a message and I'll get back to you within 24 hours. No pressure, no pitch deck — just a straight conversation about what you need.
+      </p>
+      <div class="contact-detail">
+        <span class="label">Email</span>
+        <span class="value"><a href="mailto:jett@atlas-web-develop.com">jett@atlas-web-develop.com</a></span>
+      </div>
+      <div class="contact-detail">
+        <span class="label">Response time</span>
+        <span class="value">Within 24 hours</span>
+      </div>
+      <div class="contact-detail">
+        <span class="label">Built an example</span>
+        <span class="value"><a href="https://www.atlassmp.net/" target="_blank" rel="noopener">atlassmp.net →</a></span>
+      </div>
+    </div>
+
+    <form class="fade-up" id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <div class="form-row">
+        <div class="field">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" name="name" placeholder="Steve" required />
+        </div>
+        <div class="field">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="you@email.com" required />
+        </div>
+      </div>
+      <div class="field">
+        <label for="server">Server Name / IP</label>
+        <input type="text" id="server" name="server" placeholder="play.yourserver.net" />
+      </div>
+      <div class="field">
+        <label for="type">What do you need?</label>
+        <select id="type" name="type">
+          <option value="">Select...</option>
+          <option value="landing">Landing Page</option>
+          <option value="store">Donation Store</option>
+          <option value="full">Full Site (landing + wiki + store)</option>
+          <option value="custom">Something Custom</option>
+          <option value="unsure">Not Sure Yet</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="message">Tell me about your server</label>
+        <textarea id="message" name="message" rows="5" placeholder="What's the vibe? How many players? What makes it unique?"></textarea>
+      </div>
+      <button type="submit" class="form-submit">Send Message →</button>
+      <div id="form-success">Message sent! I'll get back to you within 24 hours.</div>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Atlas<span>.</span>Dev</div>
+  <div class="footer-copy">© 2026 Atlas Web Development · atlas-web-develop.com</div>
+</footer>
+
+<script>
+  // ── Particle canvas ──
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for (let i = 0; i < 60; i++) {
+    particles.push({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      r: Math.random() * 1.5 + 0.3,
+      dx: (Math.random() - 0.5) * 0.3,
+      dy: (Math.random() - 0.5) * 0.3,
+      o: Math.random() * 0.4 + 0.1,
+    });
+  }
+
+  function drawParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0, 232, 122, ${p.o})`;
+      ctx.fill();
+      p.x += p.dx;
+      p.y += p.dy;
+      if (p.x < 0) p.x = canvas.width;
+      if (p.x > canvas.width) p.x = 0;
+      if (p.y < 0) p.y = canvas.height;
+      if (p.y > canvas.height) p.y = 0;
+    });
+    requestAnimationFrame(drawParticles);
+  }
+  drawParticles();
+
+  // ── Fade-up on scroll ──
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // ── Form ──
+  const form = document.getElementById('contact-form');
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = form.querySelector('.form-submit');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+
+    // If Formspree not set up yet, just show success
+    const action = form.action;
+    if (action.includes('YOUR_FORM_ID')) {
+      setTimeout(() => {
+        document.getElementById('form-success').style.display = 'block';
+        form.reset();
+        btn.textContent = 'Send Message →';
+        btn.disabled = false;
+      }, 800);
+      return;
+    }
+
+    try {
+      const res = await fetch(action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        document.getElementById('form-success').style.display = 'block';
+        form.reset();
+      }
+    } catch(_) {}
+    btn.textContent = 'Send Message →';
+    btn.disabled = false;
+  });
+</script>
+
+<!-- Structured data for SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Atlas Web Development",
+  "description": "Custom website design for Minecraft servers. Donation stores, player wikis, event pages and more.",
+  "url": "https://atlas-web-develop.com",
+  "email": "jett@atlas-web-develop.com",
+  "serviceType": "Web Design",
+  "areaServed": "Worldwide"
+}
+</script>
+</body>
+</html>

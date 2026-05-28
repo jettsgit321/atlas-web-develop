@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Free Minecraft Server Website Preview | Atlas Web Development</title>
+  <meta name="description" content="See what your Minecraft server website could look like — free instant preview. Enter your server IP and get a fully designed mockup in seconds." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:      #06080d;
+      --bg2:     #0c0f18;
+      --bg3:     #111520;
+      --border:  #1a2035;
+      --em:      #00e87a;
+      --em2:     #00b85e;
+      --em-dim:  rgba(0,232,122,0.08);
+      --em-glow: rgba(0,232,122,0.28);
+      --text:    #d4dce8;
+      --muted:   #4a5568;
+      --white:   #eef2f8;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+
+    /* ── CTA BANNER ── */
+    #cta-banner{display:none;position:sticky;top:0;z-index:300;background:var(--em);color:#000;padding:12px 32px;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    #cta-banner.show{display:flex}
+    .banner-text{font-family:'DM Mono',monospace;font-size:12px;font-weight:600;letter-spacing:.5px}
+    .banner-actions{display:flex;gap:10px;align-items:center}
+    .banner-btn{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:8px 18px;border:2px solid #000;background:#000;color:var(--em);cursor:pointer;text-decoration:none;font-weight:500;transition:all .15s;white-space:nowrap}
+    .banner-btn:hover{background:transparent;color:#000}
+    .banner-btn.outline{background:transparent;color:#000}
+    .banner-btn.outline:hover{background:#000;color:var(--em)}
+
+    /* ── FORM STATE ── */
+    #form-state{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;text-align:center;position:relative}
+    .orb{position:fixed;border-radius:50%;filter:blur(140px);pointer-events:none;opacity:.1;z-index:0}
+    .orb-1{width:600px;height:600px;background:var(--em);top:-200px;left:-150px}
+    .orb-2{width:400px;height:400px;background:#0060ff;bottom:5%;right:-100px}
+    .form-logo{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:48px;z-index:1}
+    .form-logo a{color:var(--em);text-decoration:none}
+    .form-headline{font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,10vw,120px);line-height:.92;color:var(--white);letter-spacing:2px;margin-bottom:20px;z-index:1}
+    .form-headline .em{color:var(--em)}
+    .form-sub{font-size:17px;color:var(--muted);max-width:480px;line-height:1.7;margin-bottom:48px;z-index:1}
+    .ip-form{display:flex;width:100%;max-width:560px;border:1px solid var(--border);z-index:1;box-shadow:0 0 40px rgba(0,0,0,.5)}
+    .ip-input{flex:1;background:var(--bg2);border:none;color:var(--white);padding:18px 24px;font-family:'DM Mono',monospace;font-size:15px;outline:none;letter-spacing:.5px}
+    .ip-input::placeholder{color:var(--muted)}
+    .ip-submit{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;background:var(--em);color:#000;border:none;padding:18px 32px;cursor:pointer;font-weight:500;white-space:nowrap;transition:background .2s}
+    .ip-submit:hover{background:var(--em2)}
+    .form-hint{margin-top:16px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--muted);z-index:1}
+    .form-hint span{color:var(--text)}
+    .examples{margin-top:48px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;z-index:1}
+    .example-chip{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);padding:7px 16px;border:1px solid var(--border);cursor:pointer;transition:all .15s;background:var(--bg2)}
+    .example-chip:hover{border-color:var(--em);color:var(--em);background:var(--em-dim)}
+    #error-msg{display:none;background:rgba(248,113,113,.05);border:1px solid rgba(248,113,113,.2);color:#f87171;padding:12px 20px;font-family:'DM Mono',monospace;font-size:11px;margin-top:16px;max-width:560px;z-index:1}
+    #error-msg.show{display:block}
+
+    /* ── LOADING STATE ── */
+    #loading-state{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:48px 24px;text-align:center}
+    #loading-state.show{display:flex}
+    #loading-icon-wrap{width:96px;height:96px;position:relative;opacity:0;transform:scale(.7);transition:opacity .5s,transform .5s}
+    #loading-icon-wrap.show{opacity:1;transform:scale(1)}
+    #loading-icon{width:96px;height:96px;image-rendering:pixelated;border:2px solid var(--border)}
+    .loading-icon-ring{position:absolute;inset:-8px;border-radius:4px;border:2px solid var(--em);opacity:.4;animation:ringPulse 1.5s ease infinite}
+    @keyframes ringPulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.8;transform:scale(1.04)}}
+    .loading-ip-display{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--em);letter-spacing:2px}
+    .loading-bar-wrap{width:300px;height:2px;background:var(--border);overflow:hidden}
+    .loading-bar-fill{height:100%;background:var(--em);width:0%;transition:width .4s ease;box-shadow:0 0 10px var(--em-glow)}
+    .loading-msg{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);min-height:20px}
+    .loading-dots span{display:inline-block;width:6px;height:6px;background:var(--em);border-radius:50%;margin:0 3px;animation:dot 1.2s ease-in-out infinite}
+    .loading-dots span:nth-child(2){animation-delay:.2s}
+    .loading-dots span:nth-child(3){animation-delay:.4s}
+    @keyframes dot{0%,80%,100%{transform:scale(.6);opacity:.3}40%{transform:scale(1);opacity:1}}
+
+    /* ── PREVIEW STATE ── */
+    #preview-state{display:none}
+    #preview-state.show{display:block}
+
+    /* NAV */
+    .preview-nav{position:sticky;top:0;z-index:100;background:rgba(6,8,13,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:14px 40px}
+    .pnav-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--white)}
+    .pnav-links{display:flex;gap:28px}
+    .pnav-links a{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s}
+    .pnav-links a:hover{color:var(--em)}
+    .pnav-cta{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;background:var(--em);color:#000;padding:9px 20px;cursor:pointer;font-weight:500;border:none;transition:background .2s}
+    .pnav-cta:hover{background:var(--em2)}
+
+    /* HERO */
+    .preview-hero{min-height:95vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 32px 80px;position:relative;overflow:hidden}
+    #hero-canvas{position:absolute;inset:0;pointer-events:none;z-index:0}
+    .hero-gradient{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,var(--em-dim) 0%,transparent 65%);pointer-events:none;z-index:0}
+    .hero-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center}
+    .preview-status{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border:1px solid;margin-bottom:28px;display:inline-flex;align-items:center;gap:7px;backdrop-filter:blur(4px)}
+    .preview-status.online{color:var(--em);border-color:var(--em-dim);background:var(--em-dim)}
+    .preview-status.offline{color:#f87171;border-color:rgba(248,113,113,.2);background:rgba(248,113,113,.05)}
+    .status-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+    .status-dot.pulse{animation:sdpulse 2s ease infinite}
+    @keyframes sdpulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+
+    /* Icon glow */
+    .icon-wrap{position:relative;margin-bottom:28px;cursor:pointer}
+    .icon-wrap:hover .icon-ring{opacity:.7;transform:scale(1.08)}
+    #preview-icon{width:96px;height:96px;image-rendering:pixelated;position:relative;z-index:2;border:2px solid var(--border);display:none}
+    .icon-ring{position:absolute;inset:-10px;border-radius:6px;border:2px solid var(--em);opacity:.35;z-index:1;animation:iconGlow 2.5s ease-in-out infinite;transition:opacity .3s,transform .3s}
+    .icon-ring2{position:absolute;inset:-20px;border-radius:10px;border:1px solid var(--em);opacity:.12;z-index:0;animation:iconGlow 2.5s ease-in-out infinite;animation-delay:.5s}
+    @keyframes iconGlow{0%,100%{opacity:.35}50%{opacity:.6}}
+
+    .preview-server-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(60px,11vw,130px);line-height:.9;color:var(--white);letter-spacing:3px;margin-bottom:16px;text-shadow:0 0 60px var(--em-glow)}
+    .preview-motd{font-size:16px;color:var(--muted);max-width:580px;line-height:1.8;margin-bottom:40px}
+    .hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:56px}
+    .btn-em{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;background:var(--em);color:#000;padding:15px 34px;border:none;cursor:pointer;font-weight:500;text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+    .btn-em:hover{background:var(--em2);transform:translateY(-2px);box-shadow:0 10px 40px var(--em-glow)}
+    .btn-ghost{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;background:rgba(255,255,255,.04);color:var(--text);padding:15px 34px;border:1px solid var(--border);cursor:pointer;font-weight:400;text-decoration:none;transition:all .2s;backdrop-filter:blur(4px)}
+    .btn-ghost:hover{border-color:var(--em);color:var(--em)}
+    .ip-box{background:rgba(6,8,13,.7);border:1px solid var(--border);padding:18px 28px;display:flex;align-items:center;gap:20px;backdrop-filter:blur(8px);flex-wrap:wrap;justify-content:center}
+    .ip-lbl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+    .ip-val{font-family:'DM Mono',monospace;font-size:18px;color:var(--em);letter-spacing:1px}
+    .copy-ip{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;background:var(--em-dim);border:1px solid var(--em-dim);color:var(--em);padding:8px 16px;cursor:pointer;transition:all .2s}
+    .copy-ip:hover{background:var(--em);color:#000}
+
+    /* STATS */
+    .preview-stats{display:flex;justify-content:center;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .pstat{padding:32px 56px;text-align:center;border-right:1px solid var(--border)}
+    .pstat:last-child{border-right:none}
+    .pstat-num{font-family:'Bebas Neue',sans-serif;font-size:44px;color:var(--em);line-height:1;margin-bottom:4px}
+    .pstat-lbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+
+    /* SECTIONS */
+    .psec{max-width:1100px;margin:0 auto;padding:80px 40px}
+    .ps-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--em);margin-bottom:12px}
+    .ps-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,56px);color:var(--white);letter-spacing:1px;margin-bottom:48px}
+    .ps-sub{font-size:15px;color:var(--muted);line-height:1.8;max-width:520px;margin-bottom:48px;margin-top:-32px}
+
+    /* WHY JOIN */
+    .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border)}
+    .why-card{background:var(--bg2);padding:40px 32px;transition:background .2s}
+    .why-card:hover{background:var(--bg3)}
+    .why-icon{width:48px;height:48px;border-radius:4px;background:var(--em-dim);border:1px solid var(--em-dim);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:20px}
+    .why-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px;color:var(--white);margin-bottom:10px}
+    .why-text{font-size:13px;color:var(--muted);line-height:1.7}
+
+    /* SCREENSHOTS */
+    .shots-divider{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .shots-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+    .shot{aspect-ratio:16/9;position:relative;overflow:hidden;cursor:pointer;background:var(--bg3)}
+    .shot:hover .shot-overlay{opacity:1}
+    .shot-bg{width:100%;height:100%;object-fit:cover;transition:transform .4s;filter:brightness(.7)}
+    .shot:hover .shot-bg{transform:scale(1.05);filter:brightness(.9)}
+    .shot-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--em)}
+    .shot-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;opacity:.3}
+    .shot-placeholder .icon{font-size:28px}
+    .shot-placeholder .label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+
+    /* DISCORD WIDGET */
+    .discord-widget{background:#36393f;border:1px solid #2f3136;padding:0;max-width:340px;overflow:hidden}
+    .dw-header{background:#2f3136;padding:16px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #26282c}
+    .dw-icon{width:40px;height:40px;background:var(--bg3);border-radius:50%;image-rendering:pixelated;flex-shrink:0}
+    .dw-name{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;color:#fff}
+    .dw-online{font-family:'DM Sans',sans-serif;font-size:12px;color:#b9bbbe;display:flex;align-items:center;gap:5px}
+    .dw-online-dot{width:8px;height:8px;border-radius:50%;background:#3ba55c}
+    .dw-body{padding:20px}
+    .dw-members{font-family:'DM Sans',sans-serif;font-size:12px;color:#b9bbbe;margin-bottom:16px}
+    .dw-member{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+    .dw-avatar{width:28px;height:28px;border-radius:50%;background:var(--border)}
+    .dw-uname{font-family:'DM Sans',sans-serif;font-size:13px;color:#dcddde}
+    .dw-join{width:100%;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;background:#5865f2;color:#fff;border:none;padding:11px;cursor:pointer;transition:background .2s;text-decoration:none;display:block;text-align:center}
+    .dw-join:hover{background:#4752c4}
+
+    .discord-section{display:grid;grid-template-columns:1fr auto;gap:60px;align-items:center}
+
+    /* RULES */
+    .rules-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border)}
+    .rule{background:var(--bg2);padding:28px 32px;display:flex;gap:16px;align-items:flex-start;transition:background .2s}
+    .rule:hover{background:var(--bg3)}
+    .rule-num{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--em);line-height:1;flex-shrink:0;min-width:30px;opacity:.6}
+    .rule h4{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:6px}
+    .rule p{font-size:13px;color:var(--muted);line-height:1.6}
+
+    /* STORE */
+    .store-divider{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .store-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border)}
+    .tier{background:var(--bg2);padding:32px 24px;text-align:center;transition:background .2s;cursor:pointer}
+    .tier:hover{background:var(--bg3)}
+    .tier-badge{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;display:inline-block;margin-bottom:16px}
+    .tier-name{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:1px;color:var(--white);margin-bottom:8px}
+    .tier-price{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--em);margin-bottom:20px}
+    .tier-features{list-style:none;text-align:left}
+    .tier-features li{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.5px;color:var(--muted);padding:5px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+    .tier-features li::before{content:'→';color:var(--em)}
+    .tier-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;width:100%;padding:10px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;margin-top:20px;transition:all .2s}
+    .tier-btn:hover{border-color:var(--em);color:var(--em);background:var(--em-dim)}
+
+    /* CLAIM CTA */
+    .claim-section{position:relative;overflow:hidden;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center;padding:100px 40px}
+    .claim-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,var(--em-dim) 0%,transparent 70%);pointer-events:none}
+    .claim-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--em);margin-bottom:20px}
+    .claim-headline{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,7vw,88px);color:var(--white);line-height:.95;letter-spacing:2px;margin-bottom:20px;position:relative;z-index:1}
+    .claim-sub{font-size:16px;color:var(--muted);max-width:500px;margin:0 auto 40px;line-height:1.7;position:relative;z-index:1}
+    .claim-price{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--muted);margin-top:16px;position:relative;z-index:1}
+    .claim-price strong{color:var(--em)}
+
+    /* SHARE BAR */
+    #share-bar{background:var(--bg3);border-top:1px solid var(--border);padding:24px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .share-text{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.5px;color:var(--muted)}
+    .share-text strong{color:var(--text)}
+    .share-btns{display:flex;gap:10px;flex-wrap:wrap}
+    .share-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:10px 20px;border:1px solid var(--border);background:var(--bg2);color:var(--text);cursor:pointer;transition:all .15s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+    .share-btn:hover,.share-btn.copied{border-color:var(--em);color:var(--em);background:var(--em-dim)}
+
+    /* FOOTER */
+    .preview-footer{background:var(--bg);border-top:1px solid var(--border);padding:28px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+    .pf-note{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.5px;color:var(--muted)}
+    .pf-brand{color:var(--em)}
+    .pf-try{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);padding-bottom:2px;transition:all .2s}
+    .pf-try:hover{color:var(--em);border-color:var(--em)}
+
+    /* REVEAL ANIMATIONS */
+    .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.d1{transition-delay:.1s}
+    .reveal.d2{transition-delay:.2s}
+    .reveal.d3{transition-delay:.3s}
+    .reveal.d4{transition-delay:.4s}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+
+    @media(max-width:768px){
+      .preview-nav{padding:12px 20px}
+      .pnav-links{display:none}
+      .psec{padding:60px 20px}
+      .preview-stats{flex-wrap:wrap}
+      .pstat{border-right:none;border-bottom:1px solid var(--border);padding:24px 32px}
+      .why-grid{grid-template-columns:1fr}
+      .shots-grid{grid-template-columns:repeat(2,1fr)}
+      .discord-section{grid-template-columns:1fr}
+      .rules-grid{grid-template-columns:1fr}
+      .store-grid{grid-template-columns:repeat(2,1fr)}
+      #share-bar{padding:20px}
+      .preview-footer{padding:20px}
+      .claim-section{padding:60px 20px}
+    }
+  </style>
+</head>
+<body>
+
+<!-- CTA BANNER -->
+<div id="cta-banner">
+  <div class="banner-text"><strong>FREE PREVIEW</strong> — Want this as your real site? Atlas Web Development builds custom Minecraft server websites.</div>
+  <div class="banner-actions">
+    <a href="mailto:jett@atlas-web-develop.com?subject=I want my server website built!" class="banner-btn">Claim Your Site →</a>
+    <button class="banner-btn outline" onclick="resetToForm()">← Try Another</button>
+  </div>
+</div>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<!-- FORM STATE -->
+<div id="form-state">
+  <div class="form-logo"><a href="https://atlas-web-develop.com">atlas-web-develop.com</a> · free preview</div>
+  <div class="form-headline">See Your<br>Server's<br><span class="em">Website</span></div>
+  <p class="form-sub">Enter your server IP and see a fully-designed website mockup — free, instant, no account needed.</p>
+  <div class="ip-form">
+    <input type="text" class="ip-input" id="ip-input" placeholder="play.yourserver.net" autocomplete="off" spellcheck="false" />
+    <button class="ip-submit" onclick="generatePreview()">Generate →</button>
+  </div>
+  <div id="error-msg"></div>
+  <div class="form-hint">Takes ~5 seconds · <span>100% free</span> · No account needed</div>
+  <div class="examples">
+    <div class="example-chip" onclick="setExample('play.hypixel.net')">play.hypixel.net</div>
+    <div class="example-chip" onclick="setExample('mc.cubecraft.net')">mc.cubecraft.net</div>
+    <div class="example-chip" onclick="setExample('play.mineplex.com')">play.mineplex.com</div>
+    <div class="example-chip" onclick="setExample('play.2b2t.org')">play.2b2t.org</div>
+  </div>
+</div>
+
+<!-- LOADING STATE -->
+<div id="loading-state">
+  <div class="loading-ip-display" id="loading-ip-display"></div>
+  <div id="loading-icon-wrap">
+    <img id="loading-icon" src="" alt="" />
+    <div class="loading-icon-ring"></div>
+  </div>
+  <div class="loading-bar-wrap"><div class="loading-bar-fill" id="loading-bar"></div></div>
+  <div class="loading-msg" id="loading-msg">Connecting to server...</div>
+  <div class="loading-dots"><span></span><span></span><span></span></div>
+</div>
+
+<!-- PREVIEW STATE -->
+<div id="preview-state">
+
+  <nav class="preview-nav">
+    <div class="pnav-logo" id="pnav-name">Server</div>
+    <div class="pnav-links">
+      <a href="#section-why">About</a>
+      <a href="#section-gallery">Gallery</a>
+      <a href="#section-rules">Rules</a>
+      <a href="#section-store">Store</a>
+    </div>
+    <button class="pnav-cta" onclick="document.getElementById('cta-banner').scrollIntoView()">Get This Site</button>
+  </nav>
+
+  <!-- HERO -->
+  <div class="preview-hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-gradient"></div>
+    <div class="hero-content">
+      <div class="preview-status online reveal" id="preview-status">
+        <div class="status-dot pulse"></div>
+        <span id="status-text">Online</span>
+      </div>
+      <div class="icon-wrap reveal d1">
+        <img id="preview-icon" src="" alt="Server Icon" />
+        <div class="icon-ring"></div>
+        <div class="icon-ring2"></div>
+      </div>
+      <div class="preview-server-name reveal d2" id="preview-name">SERVER</div>
+      <div class="preview-motd reveal d3" id="preview-motd">A great Minecraft server.</div>
+      <div class="hero-btns reveal d4">
+        <button class="btn-em" onclick="copyIP()">⚡ Connect Now</button>
+        <a href="#section-why" class="btn-ghost">Learn More</a>
+      </div>
+      <div class="ip-box reveal d4">
+        <div><div class="ip-lbl">Server IP</div><div class="ip-val" id="preview-ip-display">play.server.net</div></div>
+        <button class="copy-ip" onclick="copyIP()" id="copy-btn">Copy IP</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="preview-stats">
+    <div class="pstat reveal"><div class="pstat-num" id="stat-online">—</div><div class="pstat-lbl">Players Online</div></div>
+    <div class="pstat reveal d1"><div class="pstat-num" id="stat-max">—</div><div class="pstat-lbl">Max Capacity</div></div>
+    <div class="pstat reveal d2"><div class="pstat-num" id="stat-version">Java</div><div class="pstat-lbl">Version</div></div>
+    <div class="pstat reveal d3"><div class="pstat-num">24/7</div><div class="pstat-lbl">Always Online</div></div>
+  </div>
+
+  <!-- WHY JOIN -->
+  <div id="section-why">
+    <div class="psec">
+      <div class="ps-tag reveal">Why join us</div>
+      <div class="ps-title reveal d1">What Makes Us<br>Different</div>
+      <div class="why-grid">
+        <div class="why-card reveal d1">
+          <div class="why-icon">🌍</div>
+          <div class="why-title">Active Community</div>
+          <p class="why-text">A thriving, welcoming community of players who love the game as much as you do. New friendships are made every day.</p>
+        </div>
+        <div class="why-card reveal d2">
+          <div class="why-icon">⚔️</div>
+          <div class="why-title">Regular Events</div>
+          <p class="why-text">Weekly tournaments, building contests, seasonal events, and special in-game rewards. There's always something to do.</p>
+        </div>
+        <div class="why-card reveal d3">
+          <div class="why-icon">🛡️</div>
+          <div class="why-title">Dedicated Staff</div>
+          <p class="why-text">Our moderation team is active around the clock to keep the server fair, safe, and fun for everyone.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <div class="shots-divider" id="section-gallery">
+    <div class="psec">
+      <div class="ps-tag reveal">Screenshots</div>
+      <div class="ps-title reveal d1">See the World</div>
+      <div class="shots-grid">
+        <div class="shot reveal d1" style="grid-column:span 2">
+          <div class="shot-placeholder" style="aspect-ratio:unset;height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--bg3),var(--bg2))">
+            <div class="icon">🏔️</div><div class="label">Featured Screenshot</div>
+          </div>
+          <div class="shot-overlay">View Full</div>
+        </div>
+        <div class="shot reveal d2">
+          <div class="shot-placeholder" style="height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#0a1a0f,var(--bg2))">
+            <div class="icon">🌲</div><div class="label">Exploration</div>
+          </div>
+          <div class="shot-overlay">View Full</div>
+        </div>
+        <div class="shot reveal d1">
+          <div class="shot-placeholder" style="height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#0a0a1a,var(--bg2))">
+            <div class="icon">🏰</div><div class="label">Builds</div>
+          </div>
+          <div class="shot-overlay">View Full</div>
+        </div>
+        <div class="shot reveal d2">
+          <div class="shot-placeholder" style="height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a0a0a,var(--bg2))">
+            <div class="icon">⚔️</div><div class="label">PvP Arena</div>
+          </div>
+          <div class="shot-overlay">View Full</div>
+        </div>
+        <div class="shot reveal d3">
+          <div class="shot-placeholder" style="height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#0a1a1a,var(--bg2))">
+            <div class="icon">🌊</div><div class="label">World</div>
+          </div>
+          <div class="shot-overlay">View Full</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISCORD -->
+  <div id="section-discord" style="display:none">
+    <div class="psec">
+      <div class="discord-section">
+        <div>
+          <div class="ps-tag reveal">Community</div>
+          <div class="ps-title reveal d1">Join Our<br>Discord</div>
+          <p class="ps-sub reveal d2">Get notified about server events, talk to staff, and connect with the community between play sessions.</p>
+          <a class="btn-em reveal d3" id="discord-join-btn" href="#" target="_blank">Join Discord →</a>
+        </div>
+        <div class="discord-widget reveal d2">
+          <div class="dw-header">
+            <img class="dw-icon" id="dw-icon" src="" alt="" />
+            <div>
+              <div class="dw-name" id="dw-name">Server</div>
+              <div class="dw-online"><div class="dw-online-dot"></div> <span id="dw-count">—</span> online</div>
+            </div>
+          </div>
+          <div class="dw-body">
+            <div class="dw-members">Members</div>
+            <div class="dw-member"><div class="dw-avatar"></div><div class="dw-uname">ServerOwner</div></div>
+            <div class="dw-member"><div class="dw-avatar"></div><div class="dw-uname">StaffMember</div></div>
+            <div class="dw-member"><div class="dw-avatar"></div><div class="dw-uname">+ more members...</div></div>
+            <br/>
+            <a class="dw-join" id="dw-join-link" href="#" target="_blank">Join Server</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div style="border-top:1px solid var(--border)" id="section-rules">
+    <div class="psec">
+      <div class="ps-tag reveal">Community Standards</div>
+      <div class="ps-title reveal d1">Server Rules</div>
+      <div class="rules-grid">
+        <div class="rule reveal d1"><div class="rule-num">1</div><div><h4>Respect Everyone</h4><p>Treat all players with respect. Harassment, discrimination, or toxic behavior will not be tolerated.</p></div></div>
+        <div class="rule reveal d2"><div class="rule-num">2</div><div><h4>No Griefing</h4><p>Do not destroy or modify other players' builds without permission. This is a community server.</p></div></div>
+        <div class="rule reveal d1"><div class="rule-num">3</div><div><h4>No Cheating</h4><p>Hacked clients, exploits, or unfair advantages are strictly prohibited. Play fair and have fun.</p></div></div>
+        <div class="rule reveal d2"><div class="rule-num">4</div><div><h4>English in Global Chat</h4><p>Use English in the main chat so everyone can communicate. Other languages are fine in DMs.</p></div></div>
+        <div class="rule reveal d1"><div class="rule-num">5</div><div><h4>No Advertising</h4><p>Do not advertise other servers or services in chat. Keep promotion to the designated channels.</p></div></div>
+        <div class="rule reveal d2"><div class="rule-num">6</div><div><h4>Have Fun</h4><p>Above all else, enjoy yourself! This server exists for the community. Make memories here.</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STORE -->
+  <div class="store-divider" id="section-store">
+    <div class="psec">
+      <div class="ps-tag reveal">Support the Server</div>
+      <div class="ps-title reveal d1">Donation Store</div>
+      <div class="store-grid">
+        <div class="tier reveal d1">
+          <div class="tier-badge" style="border:1px solid #9ca3af;color:#9ca3af">Iron</div>
+          <div class="tier-name">Iron</div>
+          <div class="tier-price">$4.99</div>
+          <ul class="tier-features">
+            <li>Iron prefix tag</li><li>10 /sethome slots</li><li>Color in chat</li><li>Priority queue</li>
+          </ul>
+          <button class="tier-btn">Get Iron</button>
+        </div>
+        <div class="tier reveal d2">
+          <div class="tier-badge" style="border:1px solid #f59e0b;color:#f59e0b">Gold</div>
+          <div class="tier-name">Gold</div>
+          <div class="tier-price">$9.99</div>
+          <ul class="tier-features">
+            <li>Gold prefix tag</li><li>25 /sethome slots</li><li>Fly in spawn</li><li>All Iron perks</li>
+          </ul>
+          <button class="tier-btn">Get Gold</button>
+        </div>
+        <div class="tier reveal d3">
+          <div class="tier-badge" style="border:1px solid #60a5fa;color:#60a5fa">Diamond</div>
+          <div class="tier-name">Diamond</div>
+          <div class="tier-price">$19.99</div>
+          <ul class="tier-features">
+            <li>Diamond prefix</li><li>50 /sethome slots</li><li>Fly everywhere</li><li>All Gold perks</li>
+          </ul>
+          <button class="tier-btn">Get Diamond</button>
+        </div>
+        <div class="tier reveal d4" style="background:var(--bg3)">
+          <div class="tier-badge" style="border:1px solid var(--em);color:var(--em)">Netherite</div>
+          <div class="tier-name">Netherite</div>
+          <div class="tier-price">$34.99</div>
+          <ul class="tier-features">
+            <li>Animated prefix</li><li>Unlimited /sethome</li><li>Custom join msg</li><li>All Diamond perks</li>
+          </ul>
+          <button class="tier-btn" style="border-color:var(--em);color:var(--em)">Get Netherite</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLAIM CTA -->
+  <div class="claim-section">
+    <div class="claim-label reveal">Atlas Web Development</div>
+    <div class="claim-headline reveal d1">This Could Be<br>Your Real Site</div>
+    <p class="claim-sub reveal d2">This is a free mockup using your server's live data. We build real, custom versions of this — fully functional, with your domain, your content, and your branding.</p>
+    <a href="mailto:jett@atlas-web-develop.com?subject=I want my server website built!" class="btn-em reveal d3" style="display:inline-flex">Get Your Real Site →</a>
+    <div class="claim-price reveal d4">Starting at <strong>$149</strong> · Delivered in under a week · You own everything</div>
+  </div>
+
+  <!-- SHARE BAR -->
+  <div id="share-bar">
+    <div class="share-text">Share this preview with your community — <strong id="share-url-display"></strong></div>
+    <div class="share-btns">
+      <button class="share-btn" id="copy-link-btn" onclick="copyShareLink()">📋 Copy Link</button>
+      <a class="share-btn" id="twitter-share" href="#" target="_blank">🐦 Tweet It</a>
+    </div>
+  </div>
+
+  <div class="preview-footer">
+    <div class="pf-note">Free mockup by <span class="pf-brand">Atlas Web Development</span> — atlas-web-develop.com · Not your real site.</div>
+    <a href="mailto:jett@atlas-web-develop.com" class="pf-try">Claim your real site →</a>
+  </div>
+
+</div><!-- end preview-state -->
+
+<script>
+const API = 'https://api.mcsrvstat.us/3/';
+const MSGS = ['Connecting to server...','Fetching server data...','Loading server icon...','Building your website...','Styling your theme...','Almost ready...'];
+let currentIP = '';
+let heroParticles = [];
+let heroCanvas, heroCtx;
+
+window.addEventListener('DOMContentLoaded', () => {
+  const ip = new URLSearchParams(window.location.search).get('ip');
+  if (ip) { document.getElementById('ip-input').value = ip; generatePreview(); }
+  document.getElementById('ip-input').addEventListener('keydown', e => { if(e.key==='Enter') generatePreview(); });
+  initRevealObserver();
+});
+
+function setExample(ip){ document.getElementById('ip-input').value = ip; generatePreview(); }
+
+function resetToForm(){
+  document.getElementById('form-state').style.display = 'flex';
+  document.getElementById('loading-state').classList.remove('show');
+  document.getElementById('preview-state').classList.remove('show');
+  document.getElementById('cta-banner').classList.remove('show');
+  history.pushState({},'',window.location.pathname);
+  resetTheme();
+  if(heroCtx) cancelAnimationFrame(heroCtx._raf);
+}
+
+async function generatePreview(){
+  const raw = document.getElementById('ip-input').value.trim();
+  if(!raw) return;
+  const ip = raw.toLowerCase().replace(/^https?:\/\//,'').split('/')[0];
+  currentIP = ip;
+  document.getElementById('form-state').style.display='none';
+  document.getElementById('error-msg').classList.remove('show');
+  const loading = document.getElementById('loading-state');
+  loading.classList.add('show');
+  document.getElementById('loading-ip-display').textContent = ip;
+  const url = new URL(window.location.href);
+  url.searchParams.set('ip', ip);
+  history.pushState({},'',url.toString());
+
+  const bar = document.getElementById('loading-bar');
+  const msgEl = document.getElementById('loading-msg');
+  let mi = 0;
+  const msgInt = setInterval(()=>{ msgEl.textContent = MSGS[mi%MSGS.length]; mi++; }, 700);
+  const barInt = setInterval(()=>{ const c=parseFloat(bar.style.width)||0; if(c<82) bar.style.width=(c+Math.random()*10)+'%'; }, 350);
+
+  try {
+    const res = await fetch(API + encodeURIComponent(ip));
+    const data = await res.json();
+    clearInterval(msgInt); clearInterval(barInt);
+    // Show icon in loading screen if available
+    if(data.icon){
+      const lwrap = document.getElementById('loading-icon-wrap');
+      document.getElementById('loading-icon').src = data.icon;
+      lwrap.classList.add('show');
+      await sleep(600);
+    }
+    bar.style.width='100%';
+    msgEl.textContent='Building...';
+    await sleep(400);
+    loading.classList.remove('show');
+    document.getElementById('loading-icon-wrap').classList.remove('show');
+    renderPreview(ip, data);
+  } catch(e){
+    clearInterval(msgInt); clearInterval(barInt);
+    loading.classList.remove('show');
+    document.getElementById('form-state').style.display='flex';
+    const err = document.getElementById('error-msg');
+    err.textContent = `Couldn't reach "${ip}" — check the IP and try again.`;
+    err.classList.add('show');
+    history.pushState({},'',window.location.pathname);
+  }
+}
+
+function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+function renderPreview(ip, data){
+  const online = data.online === true;
+  const motd = cleanText(data.motd?.clean?.join(' ') || data.description || 'A great Minecraft server.');
+  const players = data.players?.online ?? '?';
+  const maxP = data.players?.max ?? '?';
+  const icon = data.icon || '';
+  const version = data.version?.toString() || 'Java';
+
+  // Derive display name
+  let displayName = cleanText(data.hostname || ip);
+  if(!data.hostname){
+    const parts = ip.replace(/:\d+$/,'').split('.');
+    const skip = ['play','mc','server','join','connect'];
+    displayName = (skip.includes(parts[0]) ? parts[1] : parts[0])?.toUpperCase() || ip.toUpperCase();
+  }
+
+  // Status
+  const statusEl = document.getElementById('preview-status');
+  statusEl.className = 'preview-status reveal '+(online?'online':'offline');
+  document.getElementById('status-text').textContent = online ? `${players} players online` : 'Offline';
+  document.querySelector('#preview-status .status-dot').className = 'status-dot'+(online?' pulse':'');
+
+  // Icon
+  const iconEl = document.getElementById('preview-icon');
+  if(icon){ iconEl.src=icon; iconEl.style.display='block'; }
+  else { iconEl.style.display='none'; }
+
+  document.getElementById('preview-name').textContent = displayName;
+  document.getElementById('pnav-name').textContent = displayName;
+  document.getElementById('preview-motd').textContent = motd.slice(0,140);
+  document.getElementById('preview-ip-display').textContent = ip;
+  document.getElementById('stat-online').textContent = online?players:'—';
+  document.getElementById('stat-max').textContent = online?maxP:'—';
+  document.getElementById('stat-version').textContent = version.replace('1.','v1.').slice(0,6);
+
+  // Discord
+  const discordInvite = extractDiscord(motd + ' ' + JSON.stringify(data));
+  if(discordInvite){
+    document.getElementById('section-discord').style.display='block';
+    document.getElementById('discord-join-btn').href = discordInvite;
+    document.getElementById('dw-join-link').href = discordInvite;
+    document.getElementById('dw-name').textContent = displayName;
+    document.getElementById('dw-count').textContent = online?players:'—';
+    if(icon){ document.getElementById('dw-icon').src=icon; }
+  } else {
+    document.getElementById('section-discord').style.display='none';
+  }
+
+  // Share
+  const shareURL = window.location.href;
+  const shortURL = shareURL.length>55 ? shareURL.slice(0,55)+'...' : shareURL;
+  document.getElementById('share-url-display').textContent = shortURL;
+  document.getElementById('twitter-share').href =
+    `https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out the website mockup I generated for ${displayName}!\n${shareURL}\n\nMade with @AtlasWebDev — free for any MC server`)}`;
+
+  // Show preview
+  document.getElementById('preview-state').classList.add('show');
+  document.getElementById('cta-banner').classList.add('show');
+  window.scrollTo(0,0);
+  // Re-trigger reveal observer
+  document.querySelectorAll('.reveal').forEach(el=>{ el.classList.remove('visible'); });
+  setTimeout(()=>initRevealObserver(), 100);
+
+  // Extract colors and theme
+  if(icon){
+    extractColor(icon).then(color=>{ if(color){ applyTheme(color); initHeroParticles(color); } });
+  } else {
+    initHeroParticles(null);
+  }
+
+  logLead(ip, displayName, players, online);
+}
+
+function cleanText(s){ return (s||'').replace(/§[\da-fk-or]/gi,'').replace(/&[\da-fk-or]/gi,'').trim(); }
+
+function extractDiscord(text){
+  const m = text.match(/(?:https?:\/\/)?(?:www\.)?discord(?:\.gg|\.com\/invite|app\.com\/invite)\/([\w\-]{4,32})/i);
+  return m ? 'https://discord.gg/'+m[1] : null;
+}
+
+// ── COLOR EXTRACTION ──
+function extractColor(b64){
+  return new Promise(resolve=>{
+    const img = new Image();
+    img.onload=()=>{
+      try{
+        const c=document.createElement('canvas'); c.width=c.height=16;
+        const x=c.getContext('2d'); x.drawImage(img,0,0,16,16);
+        const d=x.getImageData(0,0,16,16).data;
+        const buckets={};
+        for(let i=0;i<d.length;i+=4){
+          const r=d[i],g=d[i+1],b=d[i+2],a=d[i+3];
+          if(a<100) continue;
+          const br=(r+g+b)/3;
+          if(br<25||br>225) continue;
+          const max=Math.max(r,g,b),min=Math.min(r,g,b);
+          if(max===0||(max-min)/max<0.2) continue;
+          const k=`${Math.round(r/32)*32},${Math.round(g/32)*32},${Math.round(b/32)*32}`;
+          buckets[k]=(buckets[k]||0)+1;
+        }
+        const top=Object.entries(buckets).sort((a,b)=>b[1]-a[1])[0];
+        if(!top){resolve(null);return;}
+        const [r,g,b]=top[0].split(',').map(Number);
+        resolve({r,g,b});
+      }catch(e){resolve(null);}
+    };
+    img.onerror=()=>resolve(null);
+    img.src=b64;
+  });
+}
+
+function toHsl(r,g,b){
+  r/=255;g/=255;b/=255;
+  const max=Math.max(r,g,b),min=Math.min(r,g,b);
+  let h,s,l=(max+min)/2;
+  if(max===min){h=s=0;}
+  else{
+    const d=max-min;
+    s=l>.5?d/(2-max-min):d/(max+min);
+    switch(max){
+      case r:h=((g-b)/d+(g<b?6:0))/6;break;
+      case g:h=((b-r)/d+2)/6;break;
+      case b:h=((r-g)/d+4)/6;break;
+    }
+  }
+  return[Math.round(h*360),Math.round(s*100),Math.round(l*100)];
+}
+
+function applyTheme({r,g,b}){
+  const [h,s,l]=toHsl(r,g,b);
+  const S=Math.max(s,65), L=Math.min(Math.max(l,45),65);
+  const root=document.documentElement;
+  root.style.setProperty('--em',`hsl(${h},${S}%,${L}%)`);
+  root.style.setProperty('--em2',`hsl(${h},${S}%,${L-12}%)`);
+  root.style.setProperty('--em-dim',`hsla(${h},${S}%,50%,.08)`);
+  root.style.setProperty('--em-glow',`hsla(${h},${S}%,50%,.28)`);
+  root.style.setProperty('--bg',`hsl(${h},20%,4%)`);
+  document.querySelectorAll('.orb-1').forEach(el=>el.style.background=`hsl(${h},${S}%,${L}%)`);
+}
+
+function resetTheme(){
+  ['--em','--em2','--em-dim','--em-glow','--bg'].forEach(v=>document.documentElement.style.removeProperty(v));
+  document.querySelectorAll('.orb-1').forEach(el=>el.style.background='');
+}
+
+// ── HERO PARTICLES ──
+function initHeroParticles(color){
+  heroCanvas = document.getElementById('hero-canvas');
+  const wrap = heroCanvas.parentElement;
+  heroCanvas.width = wrap.offsetWidth;
+  heroCanvas.height = wrap.offsetHeight;
+  heroCtx = heroCanvas.getContext('2d');
+  const [h,s,l] = color ? toHsl(color.r,color.g,color.b) : [145,85,55];
+  heroParticles = Array.from({length:70},()=>({
+    x:Math.random()*heroCanvas.width,
+    y:Math.random()*heroCanvas.height,
+    r:Math.random()*1.8+.3,
+    dx:(Math.random()-.5)*.35,
+    dy:(Math.random()-.5)*.35,
+    o:Math.random()*.35+.05,
+  }));
+  if(heroCtx._raf) cancelAnimationFrame(heroCtx._raf);
+  function draw(){
+    heroCtx.clearRect(0,0,heroCanvas.width,heroCanvas.height);
+    // Draw connecting lines
+    for(let i=0;i<heroParticles.length;i++){
+      for(let j=i+1;j<heroParticles.length;j++){
+        const p1=heroParticles[i],p2=heroParticles[j];
+        const dist=Math.hypot(p1.x-p2.x,p1.y-p2.y);
+        if(dist<100){
+          heroCtx.beginPath();
+          heroCtx.moveTo(p1.x,p1.y);
+          heroCtx.lineTo(p2.x,p2.y);
+          heroCtx.strokeStyle=`hsla(${h},${s}%,${l}%,${(1-dist/100)*.06})`;
+          heroCtx.lineWidth=.5;
+          heroCtx.stroke();
+        }
+      }
+    }
+    // Draw particles
+    heroParticles.forEach(p=>{
+      heroCtx.beginPath();
+      heroCtx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      heroCtx.fillStyle=`hsla(${h},${s}%,${l}%,${p.o})`;
+      heroCtx.fill();
+      p.x+=p.dx; p.y+=p.dy;
+      if(p.x<0)p.x=heroCanvas.width;
+      if(p.x>heroCanvas.width)p.x=0;
+      if(p.y<0)p.y=heroCanvas.height;
+      if(p.y>heroCanvas.height)p.y=0;
+    });
+    heroCtx._raf=requestAnimationFrame(draw);
+  }
+  draw();
+  window.addEventListener('resize',()=>{
+    heroCanvas.width=wrap.offsetWidth;
+    heroCanvas.height=wrap.offsetHeight;
+  });
+}
+
+// ── REVEAL OBSERVER ──
+function initRevealObserver(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }});
+  },{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+}
+
+function copyIP(){
+  const ip=document.getElementById('preview-ip-display').textContent;
+  navigator.clipboard.writeText(ip).catch(()=>{});
+  const btn=document.getElementById('copy-btn');
+  btn.textContent='✓ Copied!';
+  setTimeout(()=>btn.textContent='Copy IP',2000);
+}
+
+function copyShareLink(){
+  navigator.clipboard.writeText(window.location.href).catch(()=>{});
+  const btn=document.getElementById('copy-link-btn');
+  btn.textContent='✓ Copied!'; btn.classList.add('copied');
+  setTimeout(()=>{ btn.textContent='📋 Copy Link'; btn.classList.remove('copied'); },2000);
+}
+
+function logLead(ip,name,players,online){
+  fetch('https://formspree.io/f/YOUR_LEAD_FORM_ID',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify({type:'preview',ip,name,players:players.toString(),online:online.toString(),url:window.location.href,time:new Date().toISOString()})
+  }).catch(()=>{});
+}
+</script>
+</body>
+</html>
