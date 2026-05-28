@@ -820,7 +820,7 @@ function copyShareLink(){
 }
 
 function logLead(ip,name,players,online){
-  fetch('https://formspree.io/f/YOUR_LEAD_FORM_ID',{
+  fetch('https://formspree.io/f/mjgzlaqb',{
     method:'POST',
     headers:{'Content-Type':'application/json','Accept':'application/json'},
     body:JSON.stringify({type:'preview',ip,name,players:players.toString(),online:online.toString(),url:window.location.href,time:new Date().toISOString()})
