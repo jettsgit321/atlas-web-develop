@@ -1,0 +1,3 @@
+# Cloudflare Pages redirect rules
+# Handles shareable preview URLs like /preview/play.hypixel.net
+/preview/*  /preview/?ip=:splat  302

@@ -665,12 +665,26 @@ const API = 'https://api.mcsrvstat.us/3/';
 const MSGS = ['Connecting...','Fetching data...','Loading icon...','Building preview...','Almost done...'];
 let IP = '';
 
-window.addEventListener('DOMContentLoaded', () => {
-  const ip = new URLSearchParams(location.search).get('ip');
+// Preview lead capture — create a dedicated Formspree form at formspree.io and paste its ID here.
+// (Keep it separate from the contact form so leads vs. quotes don't mix.)
+// Current fallback uses the contact form ID until you replace it.
+const LEAD_HOOK = 'https://formspree.io/f/mjgzlaqb';
+
+function init() {
+  // 1. query string: ?ip=play.hypixel.net
+  let ip = new URLSearchParams(location.search).get('ip');
+  // 2. path-based fallback: /preview/play.hypixel.net (before _redirects fires, or on direct hits)
+  if (!ip) {
+    const seg = decodeURIComponent(location.pathname).replace(/^\/preview\/?/, '').replace(/\/$/, '');
+    if (seg) ip = seg;
+  }
   if (ip) { document.getElementById('ip-in').value = ip; go(ip); }
-  document.getElementById('ip-in').addEventListener('keydown', e => { if (e.key==='Enter') go(); });
+  document.getElementById('ip-in').addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
   observe();
-});
+}
+// Guard against the DOMContentLoaded having already fired (script at bottom of body)
+if (document.readyState === 'loading') window.addEventListener('DOMContentLoaded', init);
+else init();
 
 function tryIP(ip) { document.getElementById('ip-in').value = ip; go(ip); }
 
@@ -893,8 +907,23 @@ document.querySelectorAll('.fcat').forEach(btn => {
   });
 });
 
-function log(ip,name,players,online) {
-  fetch('https://formspree.io/f/mjgzlaqb',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({type:'preview',ip,name,players:String(players),online:String(online),url:location.href,time:new Date().toISOString()})}).catch(()=>{});
+function log(ip, name, players, online) {
+  const data = {
+    _subject: `[Preview Lead] ${name} — ${ip}`,
+    type: 'preview_lead',
+    ip, name,
+    players: String(players),
+    online: String(online),
+    url: location.href,
+    time: new Date().toISOString(),
+    ref: document.referrer || ''
+  };
+  const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+  // sendBeacon fires even if the user closes the tab immediately
+  const sent = navigator.sendBeacon ? navigator.sendBeacon(LEAD_HOOK, blob) : false;
+  if (!sent) {
+    fetch(LEAD_HOOK, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(data) }).catch(() => {});
+  }
 }
 
 function generatePreview(f){go(f);}
