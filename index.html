@@ -491,6 +491,8 @@
           <label for="message">Tell me about your business</label>
           <textarea id="message" name="message" rows="3" placeholder="What do you do? Where are you located? Any specific needs?"></textarea>
         </div>
+        <!-- honeypot — hidden from humans, bots fill it, Formspree drops the submission -->
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
         <button type="submit" class="submit-btn">Send message →</button>
         <div id="form-success">Got it — I'll be in touch today with your free mockup.</div>
       </form>
