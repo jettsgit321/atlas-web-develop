@@ -279,6 +279,37 @@
       border-radius: 8px; font-size: 13px; font-weight: 500;
     }
 
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; gap: 10px; }
+    .faq-item {
+      border: 1px solid var(--border); border-radius: 10px;
+      overflow: hidden; transition: border-color .2s;
+    }
+    .faq-item.open { border-color: var(--green); }
+    .faq-q {
+      width: 100%; display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 22px; background: #fff; border: none; cursor: pointer;
+      font-family: inherit; font-size: 15px; font-weight: 600;
+      color: #111; text-align: left; gap: 16px;
+      transition: background .15s;
+    }
+    .faq-q:hover { background: var(--panel); }
+    .faq-icon {
+      font-size: 20px; font-weight: 300; color: var(--green);
+      flex-shrink: 0; transition: transform .25s;
+      line-height: 1;
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-a {
+      max-height: 0; overflow: hidden;
+      transition: max-height .3s ease, padding .3s ease;
+    }
+    .faq-item.open .faq-a { max-height: 300px; }
+    .faq-a p {
+      padding: 0 22px 18px;
+      font-size: 14px; color: var(--muted); line-height: 1.75;
+    }
+
     /* ── FOOTER ── */
     footer {
       border-top: 1px solid var(--border); background: var(--panel);
@@ -325,6 +356,7 @@
     <li><a href="#services">Services</a></li>
     <li><a href="#pricing">Pricing</a></li>
     <li><a href="#how-it-works">How it works</a></li>
+    <li><a href="#faq">FAQ</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
   <a href="#contact" class="btn-dark">Get a free mockup</a>
@@ -509,6 +541,78 @@
   </div>
 </div>
 
+<!-- FAQ -->
+<div id="faq">
+  <div class="section">
+    <div class="sec-label">FAQ</div>
+    <h2 class="sec-h">Common questions</h2>
+    <p class="sec-p">Straight answers — no sales speak.</p>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Do I own my website?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>You own your content, your brand, and your domain name — those are yours forever. I handle the technical side (hosting, security, updates) as part of the monthly plan. If you ever want to move on, I'll hand over all your files, no hassle.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How does the $99/mo work?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>It covers everything to keep your site running — hosting, your domain name, SSL security certificate, and edits. Without it, you'd be paying separately for hosting (~$10-20/mo), your domain (~$15/yr), and any time a developer touches your site. The monthly plan bundles it all into one flat rate with no surprises.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What if I want changes after launch?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>That's what the monthly plan is for. Need to update your hours, add a new service, swap out photos, or change your prices? Just text or email me and I'll get it done — usually same day. No hourly rates, no invoices, no waiting.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How long does it take to build?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>About 2 weeks from the time you approve the mockup. First I build a free mockup so you can see exactly what you're getting — no commitment until you say it looks good. Once approved, the real site follows in roughly 2 weeks depending on how quickly you can get me photos and info.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What do you need from me to get started?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Not much. Your business name, phone number, a description of what you do, your service area, and any photos you want on the site. I'll handle the rest — writing, layout, SEO setup, everything. Most clients send me a few texts and we're off.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Can I cancel the monthly plan?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Yes, any time. No long-term contracts. If you cancel, I'll give you all your files and you can move the site to another host. I'd rather earn your business every month than lock you in.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <!-- CONTACT -->
 <div class="alt-bg" id="contact">
   <div class="section">
@@ -588,6 +692,13 @@
 </footer>
 
 <script>
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
 document.getElementById('contact-form').addEventListener('submit', async e => {
   e.preventDefault();
   const btn = e.target.querySelector('.submit-btn');
