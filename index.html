@@ -1142,6 +1142,26 @@ document.getElementById('contact-form').addEventListener('submit', async e => {
       if (el && text != null) el.textContent = text;
     }
 
+    // Announcement bar
+    if (c.announcement?.enabled && c.announcement?.text) {
+      const bar = document.createElement('div');
+      bar.style.cssText = `background:${c.announcement.bg||'#16a34a'};color:#fff;text-align:center;padding:11px 20px;font-size:14px;font-weight:600;letter-spacing:-.1px;`;
+      bar.textContent = c.announcement.text;
+      const nav = document.querySelector('nav');
+      if (nav) nav.parentNode.insertBefore(bar, nav);
+    }
+
+    // SEO meta tags
+    if (c.seo) {
+      if (c.seo.title) document.title = c.seo.title;
+      const desc = document.querySelector('meta[name="description"]');
+      if (desc && c.seo.description) desc.setAttribute('content', c.seo.description);
+      const ogTitle = document.querySelector('meta[property="og:title"]');
+      if (ogTitle && c.seo.ogTitle) ogTitle.setAttribute('content', c.seo.ogTitle);
+      const ogDesc = document.querySelector('meta[property="og:description"]');
+      if (ogDesc && c.seo.ogDescription) ogDesc.setAttribute('content', c.seo.ogDescription);
+    }
+
     // Hero
     if (c.hero) {
       set('cms-hero-tag', c.hero.tag);
