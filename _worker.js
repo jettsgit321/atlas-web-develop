@@ -435,38 +435,39 @@ export default {
       return handleCms(request, env);
     }
 
-    // Inject dynamic content into the main page
-    if ((url.pathname === '/' || url.pathname === '/index.html') && request.method === 'GET') {
-      const assetRes = await env.ASSETS.fetch(request);
-      try {
-        const content = await env.CONTENT.get('site_content', { type: 'json' });
-        if (!content) return assetRes;
-        let html = await assetRes.text();
-        let changed = false;
+    // Serve static assets — inject CMS content into any HTML response
+    const assetRes = await env.ASSETS.fetch(request);
+    const ct = assetRes.headers.get('content-type') || '';
+    if (!ct.includes('text/html') || request.method !== 'GET') return assetRes;
 
-        // SEO
-        const seo = content.seo;
-        if (seo) {
-          if (seo.title) { html = html.replace(/<title>[^<]*<\/title>/, `<title>${seo.title}</title>`); changed = true; }
-          if (seo.description) { html = html.replace(/(<meta name="description" content=")[^"]*(")/,`$1${seo.description}$2`); changed = true; }
-          if (seo.ogTitle) { html = html.replace(/(<meta property="og:title" content=")[^"]*(")/,`$1${seo.ogTitle}$2`); changed = true; }
-          if (seo.ogDescription) { html = html.replace(/(<meta property="og:description" content=")[^"]*(")/,`$1${seo.ogDescription}$2`); changed = true; }
-        }
+    try {
+      const content = await env.CONTENT.get('site_content', { type: 'json' });
+      if (!content) return assetRes;
+      let html = await assetRes.text();
 
-        // Announcement bar (injected before <nav)
-        const ann = content.announcement;
-        if (ann?.enabled && ann?.text) {
-          const bar = `<div style="background:${ann.bg||'#16a34a'};color:#fff;text-align:center;padding:11px 20px;font-size:14px;font-weight:600;letter-spacing:-.1px;">${ann.text}</div>`;
-          html = html.replace('<nav', bar + '\n<nav'); changed = true;
-        }
+      // SEO
+      const seo = content.seo;
+      if (seo) {
+        if (seo.title) html = html.replace(/<title>[^<]*<\/title>/, `<title>${seo.title}</title>`);
+        if (seo.description) html = html.replace(/(<meta name="description" content=")[^"]*(")/,`$1${seo.description}$2`);
+        if (seo.ogTitle) html = html.replace(/(<meta property="og:title" content=")[^"]*(")/,`$1${seo.ogTitle}$2`);
+        if (seo.ogDescription) html = html.replace(/(<meta property="og:description" content=")[^"]*(")/,`$1${seo.ogDescription}$2`);
+      }
 
-        // Contact + stats + hours update script
-        const extras = {};
-        if (content.contact) extras.contact = content.contact;
-        if (content.stats) extras.stats = content.stats;
-        if (content.hours) extras.hours = content.hours;
-        if (Object.keys(extras).length) {
-          const injectScript = `<script>(function(){const D=${JSON.stringify(extras)};
+      // Announcement bar
+      const ann = content.announcement;
+      if (ann?.enabled && ann?.text) {
+        const bar = `<div style="background:${ann.bg||'#16a34a'};color:#fff;text-align:center;padding:11px 20px;font-size:14px;font-weight:600;">${ann.text}</div>`;
+        html = html.replace('<nav', bar + '\n<nav');
+      }
+
+      // Contact / stats / hours update script
+      const extras = {};
+      if (content.contact) extras.contact = content.contact;
+      if (content.stats) extras.stats = content.stats;
+      if (content.hours) extras.hours = content.hours;
+      if (Object.keys(extras).length) {
+        const injectScript = `<script>(function(){const D=${JSON.stringify(extras)};
 if(D.contact){const s=id=>document.getElementById(id);
 if(s('cms-phone'))s('cms-phone').textContent=D.contact.phone;
 if(s('cms-nav-phone'))s('cms-nav-phone').textContent=D.contact.phone;
@@ -478,23 +479,18 @@ if(s('cms-nav-phone'))s('cms-nav-phone').href='tel:'+D.contact.phone.replace(/\\
 if(D.stats){document.querySelectorAll('.stat-num').forEach(function(el,i){var st=D.stats[i];if(!st)return;el.dataset.target=st.value;el.dataset.prefix=st.prefix||'';el.dataset.suffix=st.suffix||'';el.textContent=(st.prefix||'')+'0'+(st.suffix||'');});document.querySelectorAll('.stat-desc').forEach(function(el,i){if(D.stats[i])el.textContent=D.stats[i].label;});}
 if(D.hours){var el=document.getElementById('cms-hours');var wrap=document.getElementById('cms-hours-wrap');if(el){var days=['mon','tue','wed','thu','fri','sat','sun'],names=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];el.innerHTML=days.map(function(d,i){return'<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #f3f4f6;font-size:14px;"><span style="color:#6b7280">'+names[i]+'</span><span style="font-weight:600">'+(D.hours[d]||'')+'</span></div>';}).join('');if(wrap)wrap.style.display='block';}}
 })();<\/script>`;
-          html = html.replace('</body>', injectScript + '\n</body>'); changed = true;
-        }
+        html = html.replace('</body>', injectScript + '\n</body>');
+      }
 
-        // Custom CSS / HTML / JS
-        const custom = content.custom;
-        if (custom) {
-          if (custom.css) { html = html.replace('</head>', `<style>${custom.css}</style></head>`); changed = true; }
-          if (custom.html) { html = html.replace('</body>', `${custom.html}\n</body>`); changed = true; }
-          if (custom.js) { html = html.replace('</body>', `<script>${custom.js}<\/script>\n</body>`); changed = true; }
-        }
+      // Custom CSS / HTML / JS
+      const custom = content.custom;
+      if (custom) {
+        if (custom.css) html = html.replace('</head>', `<style>${custom.css}</style></head>`);
+        if (custom.html) html = html.replace('</body>', `${custom.html}\n</body>`);
+        if (custom.js) html = html.replace('</body>', `<script>${custom.js}<\/script>\n</body>`);
+      }
 
-        if (!changed) return assetRes;
-        return new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' } });
-      } catch { return assetRes; }
-    }
-
-    // Everything else — serve static assets
-    return env.ASSETS.fetch(request);
+      return new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' } });
+    } catch { return assetRes; }
   }
 };
