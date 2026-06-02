@@ -454,13 +454,6 @@ export default {
         if (seo.ogDescription) html = html.replace(/(<meta property="og:description" content=")[^"]*(")/,`$1${seo.ogDescription}$2`);
       }
 
-      // Announcement bar
-      const ann = content.announcement;
-      if (ann?.enabled && ann?.text) {
-        const bar = `<div style="background:${ann.bg||'#16a34a'};color:#fff;text-align:center;padding:11px 20px;font-size:14px;font-weight:600;">${ann.text}</div>`;
-        html = html.replace('<nav', bar + '\n<nav');
-      }
-
       // Contact / stats / hours update script
       const extras = {};
       if (content.contact) extras.contact = content.contact;
