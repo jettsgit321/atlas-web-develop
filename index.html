@@ -616,7 +616,7 @@
     <li><a href="#contact">Contact</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:12px;">
-    <a href="tel:9188293252" class="nav-phone">(918) 829-3252</a>
+    <a href="tel:9188293252" class="nav-phone" id="cms-nav-phone">(918) 829-3252</a>
     <a href="#contact" class="btn-dark">Get a free mockup</a>
   </div>
 </nav>
@@ -967,19 +967,23 @@
         <p class="sec-p" style="margin-bottom:32px">Send me a message and I'll put together a free mockup of your site, no cost, no commitment. If you like it, we'll go from there.</p>
         <div class="contact-detail">
           <div class="contact-label">Phone</div>
-          <div class="contact-value"><a href="tel:9188293252">(918) 829-3252</a></div>
+          <div class="contact-value"><a href="tel:9188293252" id="cms-phone">(918) 829-3252</a></div>
         </div>
         <div class="contact-detail">
           <div class="contact-label">Email</div>
-          <div class="contact-value"><a href="mailto:jett@atlas-web-develop.com">jett@atlas-web-develop.com</a></div>
+          <div class="contact-value"><a href="mailto:jett@atlas-web-develop.com" id="cms-email">jett@atlas-web-develop.com</a></div>
         </div>
         <div class="contact-detail">
           <div class="contact-label">Response time</div>
-          <div class="contact-value">Same day, usually within a few hours</div>
+          <div class="contact-value" id="cms-response">Same day, usually within a few hours</div>
         </div>
         <div class="contact-detail">
           <div class="contact-label">Service area</div>
-          <div class="contact-value">Bixby, Jenks, Glenpool, Broken Arrow,<br>Sand Springs, Owasso, Tulsa</div>
+          <div class="contact-value" id="cms-area">Bixby, Jenks, Glenpool, Broken Arrow, Sand Springs, Owasso, Tulsa</div>
+        </div>
+        <div class="contact-detail" id="cms-hours-wrap" style="display:none">
+          <div class="contact-label">Hours</div>
+          <div id="cms-hours"></div>
         </div>
         <div class="contact-detail">
           <div class="contact-label">Starting price</div>

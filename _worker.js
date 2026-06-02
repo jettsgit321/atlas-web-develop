@@ -40,7 +40,29 @@ const DEFAULT_CONTENT = {
     { q: 'What do you need from me to get started?', a: "Not much. Your business name, phone number, a description of what you do, your service area, and any photos you want on the site. I'll handle the rest: writing, layout, SEO setup, everything. Most clients send me a few texts and we're off." },
     { q: 'Can I cancel the monthly plan?', a: "Yes, any time. No long-term contracts. If you cancel, your domain name is yours to keep. That's always in your name. The website itself comes down since it's part of the monthly plan, but you walk away with your domain and can use it however you like." }
   ],
-  custom: { html: '', css: '', js: '' }
+  custom: { html: '', css: '', js: '' },
+  announcement: { enabled: false, text: '', bg: '#16a34a' },
+  seo: {
+    title: 'Local Business Websites | Atlas Web Development, Bixby & Tulsa, OK',
+    description: 'Professional websites for small businesses in Bixby, Jenks, and Tulsa. Fast delivery, fair prices, free mockup. Local web designer.',
+    ogTitle: 'Local Business Websites | Atlas Web Development',
+    ogDescription: 'Professional websites for small businesses in Bixby & Tulsa. Free mockup, 2-week delivery, starting at $199.'
+  },
+  contact: {
+    phone: '(918) 829-3252',
+    email: 'jett@atlas-web-develop.com',
+    responseTime: 'Same day, usually within a few hours',
+    serviceArea: 'Bixby, Jenks, Glenpool, Broken Arrow, Sand Springs, Owasso, Tulsa'
+  },
+  stats: [
+    { value: '199', prefix: '$', suffix: '', label: 'Starting price' },
+    { value: '2', prefix: '', suffix: ' weeks', label: 'Average delivery' },
+    { value: '99', prefix: '$', suffix: '/mo', label: 'All-in monthly plan' }
+  ],
+  hours: {
+    mon: '8am – 6pm', tue: '8am – 6pm', wed: '8am – 6pm',
+    thu: '8am – 6pm', fri: '8am – 6pm', sat: 'By appointment', sun: 'Closed'
+  }
 };
 
 // ── Crypto ──────────────────────────────────────────────
@@ -218,9 +240,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;background:
     <button class="nav-btn" onclick="nav('testimonials',this)"><span class="nav-icon">⭐</span><span class="nav-label">Testimonials</span></button>
     <button class="nav-btn" onclick="nav('faqs',this)"><span class="nav-icon">❓</span><span class="nav-label">FAQs</span></button>
     <div class="sidebar-divider"></div>
+    <div class="sidebar-section">Site Settings</div>
+    <button class="nav-btn" onclick="nav('contact',this)"><span class="nav-icon">📞</span><span class="nav-label">Contact Info</span></button>
+    <button class="nav-btn" onclick="nav('hours',this)"><span class="nav-icon">🕐</span><span class="nav-label">Business Hours</span></button>
+    <button class="nav-btn" onclick="nav('stats',this)"><span class="nav-icon">📊</span><span class="nav-label">Stats Bar</span></button>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">Marketing</div>
+    <button class="nav-btn" onclick="nav('announcement',this)"><span class="nav-icon">📢</span><span class="nav-label">Announcement</span></button>
+    <button class="nav-btn" onclick="nav('seo',this)"><span class="nav-icon">🔍</span><span class="nav-label">SEO</span></button>
+    <div class="sidebar-divider"></div>
     <div class="sidebar-section">Advanced</div>
     <button class="nav-btn" onclick="nav('html',this)"><span class="nav-icon">🧩</span><span class="nav-label">HTML Editor</span></button>
     <button class="nav-btn" onclick="nav('code',this)"><span class="nav-icon">💻</span><span class="nav-label">CSS &amp; JS</span></button>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">Account</div>
+    <button class="nav-btn" onclick="nav('password',this)"><span class="nav-icon">🔒</span><span class="nav-label">Change Password</span></button>
   </nav>
   <div class="main" id="main"></div>
 </div>
@@ -230,7 +264,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;background:
 const C=${c};let pTab='landing';
 function e(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function nav(name,btn){document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render(name)}
-function render(name){const el=document.getElementById('main');if(name==='hero')el.innerHTML=heroSection();else if(name==='services')el.innerHTML=servicesSection();else if(name==='pricing')el.innerHTML=pricingSection();else if(name==='testimonials')el.innerHTML=testimonialsSection();else if(name==='faqs')el.innerHTML=faqsSection();else if(name==='html')el.innerHTML=htmlSection();else if(name==='code')el.innerHTML=codeSection()}
+function render(name){const el=document.getElementById('main');if(name==='hero')el.innerHTML=heroSection();else if(name==='services')el.innerHTML=servicesSection();else if(name==='pricing')el.innerHTML=pricingSection();else if(name==='testimonials')el.innerHTML=testimonialsSection();else if(name==='faqs')el.innerHTML=faqsSection();else if(name==='contact')el.innerHTML=contactSection();else if(name==='hours')el.innerHTML=hoursSection();else if(name==='stats')el.innerHTML=statsSection();else if(name==='announcement')el.innerHTML=announcementSection();else if(name==='seo')el.innerHTML=seoSection();else if(name==='html')el.innerHTML=htmlSection();else if(name==='code')el.innerHTML=codeSection();else if(name==='password')el.innerHTML=passwordSection()}
 function heroSection(){const h=C.hero||{};return\`<div class="sec-header"><div class="sec-title">Hero</div><div class="sec-desc">The first thing visitors see.</div></div><div class="card"><div class="card-title">Location tag</div><div class="field"><label class="field-label">Tag above headline</label><input class="f-input" type="text" value="\${e(h.tag)}" oninput="C.hero.tag=this.value"/></div></div><div class="card"><div class="card-title">Headline</div><div class="field"><label class="field-label">White part</label><input class="f-input" type="text" value="\${e(h.headlineWhite)}" oninput="C.hero.headlineWhite=this.value"/></div><div class="field"><label class="field-label">Green part</label><input class="f-input" type="text" value="\${e(h.headlineGreen)}" oninput="C.hero.headlineGreen=this.value"/></div></div><div class="card"><div class="card-title">Typewriter text</div><div class="field"><label class="field-label">Text that types out below the headline</label><textarea class="f-input" rows="3" oninput="C.hero.typewriter=this.value">\${e(h.typewriter)}</textarea></div></div>\`}
 function servicesSection(){const s=C.services||[];return\`<div class="sec-header"><div class="sec-title">Services</div><div class="sec-desc">The 3 numbered items.</div></div>\${s.map((sv,i)=>\`<div class="card"><div class="card-title">Item \${i+1}</div><div class="field"><label class="field-label">Title</label><input class="f-input" type="text" value="\${e(sv.title)}" oninput="C.services[\${i}].title=this.value"/></div><div class="field"><label class="field-label">Description</label><textarea class="f-input" rows="3" oninput="C.services[\${i}].desc=this.value">\${e(sv.desc)}</textarea></div></div>\`).join('')}\`}
 function pricingSection(){return\`<div class="sec-header"><div class="sec-title">Pricing</div><div class="sec-desc">Edit prices and features.</div></div><div class="tab-row"><button class="tab \${pTab==='landing'?'active':''}" onclick="pTab='landing';render('pricing')">Landing Page</button><button class="tab \${pTab==='standard'?'active':''}" onclick="pTab='standard';render('pricing')">Standard Site</button><button class="tab \${pTab==='full'?'active':''}" onclick="pTab='full';render('pricing')">Full Site</button></div>\${pricingCard(pTab)}\`}
@@ -239,6 +273,20 @@ function addFeat(plan){if(!C.pricing[plan].features)C.pricing[plan].features=[];
 function delFeat(plan,i){C.pricing[plan].features.splice(i,1);render('pricing')}
 function testimonialsSection(){const ts=C.testimonials||[];return\`<div class="sec-header"><div class="sec-title">Testimonials</div><div class="sec-desc">The 3 client reviews.</div></div>\${ts.map((t,i)=>\`<div class="card"><div class="card-title">Review \${i+1}</div><div class="field"><label class="field-label">Quote</label><textarea class="f-input" rows="4" oninput="C.testimonials[\${i}].text=this.value">\${e(t.text)}</textarea></div><div class="field"><label class="field-label">Name</label><input class="f-input" type="text" value="\${e(t.name)}" oninput="C.testimonials[\${i}].name=this.value"/></div></div>\`).join('')}\`}
 function faqsSection(){const faqs=C.faqs||[];return\`<div class="sec-header"><div class="sec-title">FAQs</div><div class="sec-desc">The questions accordion.</div></div>\${faqs.map((f,i)=>\`<div class="card"><div class="card-title">Question \${i+1}</div><div class="field"><label class="field-label">Question</label><input class="f-input" type="text" value="\${e(f.q)}" oninput="C.faqs[\${i}].q=this.value"/></div><div class="field"><label class="field-label">Answer</label><textarea class="f-input" rows="4" oninput="C.faqs[\${i}].a=this.value">\${e(f.a)}</textarea></div></div>\`).join('')}\`}
+function contactSection(){if(!C.contact)C.contact={phone:'(918) 829-3252',email:'jett@atlas-web-develop.com',responseTime:'Same day, usually within a few hours',serviceArea:'Bixby, Jenks, Glenpool, Broken Arrow, Sand Springs, Owasso, Tulsa'};const ct=C.contact;return\`<div class="sec-header"><div class="sec-title">Contact Info</div><div class="sec-desc">Your phone number, email, and service area shown in the contact section and footer.</div></div><div class="card"><div class="card-title">📞 Contact details</div><div class="field-row"><div class="field"><label class="field-label">Phone number</label><input class="f-input" type="text" value="\${e(ct.phone)}" oninput="C.contact.phone=this.value"/></div><div class="field"><label class="field-label">Email address</label><input class="f-input" type="text" value="\${e(ct.email)}" oninput="C.contact.email=this.value"/></div></div><div class="field"><label class="field-label">Response time</label><input class="f-input" type="text" value="\${e(ct.responseTime)}" oninput="C.contact.responseTime=this.value"/></div><div class="field"><label class="field-label">Service area</label><input class="f-input" type="text" value="\${e(ct.serviceArea)}" oninput="C.contact.serviceArea=this.value"/></div></div>\`}
+
+function hoursSection(){if(!C.hours)C.hours={mon:'8am – 6pm',tue:'8am – 6pm',wed:'8am – 6pm',thu:'8am – 6pm',fri:'8am – 6pm',sat:'By appointment',sun:'Closed'};const h=C.hours;const days=[['mon','Monday'],['tue','Tuesday'],['wed','Wednesday'],['thu','Thursday'],['fri','Friday'],['sat','Saturday'],['sun','Sunday']];return\`<div class="sec-header"><div class="sec-title">Business Hours</div><div class="sec-desc">Shown in the contact section of your site. Leave blank to hide a day.</div></div><div class="card"><div class="card-title">🕐 Weekly schedule</div>\${days.map(([k,label])=>\`<div class="field-row" style="align-items:center;margin-bottom:10px"><div style="font-size:13px;font-weight:600;color:#374151;padding-top:4px">\${label}</div><div><input class="f-input" type="text" value="\${e(h[k])}" oninput="C.hours['\${k}']=this.value" placeholder="Closed"/></div></div>\`).join('')}</div>\`}
+
+function statsSection(){if(!C.stats)C.stats=[{value:'199',prefix:'$',suffix:'',label:'Starting price'},{value:'2',prefix:'',suffix:' weeks',label:'Average delivery'},{value:'99',prefix:'$',suffix:'/mo',label:'All-in monthly plan'}];return\`<div class="sec-header"><div class="sec-title">Stats Bar</div><div class="sec-desc">The three numbers that count up below the hero. Update when your pricing or timeline changes.</div></div>\${C.stats.map((s,i)=>\`<div class="card"><div class="card-title">Stat \${i+1}</div><div class="field-row"><div class="field"><label class="field-label">Value</label><input class="f-input" type="text" value="\${e(s.value)}" oninput="C.stats[\${i}].value=this.value"/></div><div class="field"><label class="field-label">Label below</label><input class="f-input" type="text" value="\${e(s.label)}" oninput="C.stats[\${i}].label=this.value"/></div></div><div class="field-row"><div class="field"><label class="field-label">Prefix (e.g. $)</label><input class="f-input" type="text" value="\${e(s.prefix)}" oninput="C.stats[\${i}].prefix=this.value"/></div><div class="field"><label class="field-label">Suffix (e.g. /mo)</label><input class="f-input" type="text" value="\${e(s.suffix)}" oninput="C.stats[\${i}].suffix=this.value"/></div></div></div>\`).join('')}\`}
+
+function announcementSection(){if(!C.announcement)C.announcement={enabled:false,text:'',bg:'#16a34a'};const a=C.announcement;return\`<div class="sec-header"><div class="sec-title">Announcement Bar</div><div class="sec-desc">A banner that appears at the very top of your site. Great for promos, limited-time offers, or important notices.</div></div><div class="card"><div class="card-title">📢 Banner settings</div><div class="field" style="display:flex;align-items:center;gap:12px;background:#f9fafb;padding:14px;border-radius:10px;margin-bottom:16px"><label style="position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0"><input type="checkbox" \${a.enabled?'checked':''} onchange="C.announcement.enabled=this.checked;document.getElementById('ann-preview').style.display=this.checked?'block':'none'" style="opacity:0;width:0;height:0"><span style="position:absolute;cursor:pointer;inset:0;background:\${a.enabled?'#16a34a':'#d1d5db'};border-radius:12px;transition:.2s"><span style="position:absolute;content:'';height:18px;width:18px;left:\${a.enabled?'23px':'3px'};bottom:3px;background:#fff;border-radius:50%;transition:.2s"></span></span></label><span style="font-size:14px;font-weight:600;color:#374151">\${a.enabled?'Banner is ON':'Banner is OFF'}</span></div><div class="field"><label class="field-label">Banner text</label><input class="f-input" type="text" value="\${e(a.text)}" placeholder="e.g. Free Google Business Profile setup this month only!" oninput="C.announcement.text=this.value"/></div><div class="field"><label class="field-label">Background color</label><div style="display:flex;gap:10px;flex-wrap:wrap">\${['#16a34a','#0ea5e9','#f59e0b','#dc2626','#7c3aed','#111'].map(col=>\`<div onclick="C.announcement.bg='\${col}';document.querySelectorAll('.color-swatch').forEach(s=>s.style.outline='none');this.style.outline='3px solid #fff';this.style.outlineOffset='2px'" class="color-swatch" style="width:32px;height:32px;border-radius:8px;background:\${col};cursor:pointer;border:2px solid rgba(0,0,0,.1);\${a.bg===col?'outline:3px solid #fff;outline-offset:2px':''}"></div>\`).join('')}</div></div></div><div id="ann-preview" style="margin-top:16px;\${a.enabled&&a.text?'':'display:none'}"><div style="font-size:12px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Preview</div><div style="background:\${a.bg||'#16a34a'};color:#fff;text-align:center;padding:11px 20px;font-size:14px;font-weight:600;border-radius:8px">\${e(a.text)||'Your announcement here'}</div></div>\`}
+
+function seoSection(){if(!C.seo)C.seo={title:'Local Business Websites | Atlas Web Development, Bixby & Tulsa, OK',description:'Professional websites for small businesses in Bixby, Jenks, and Tulsa. Fast delivery, fair prices, free mockup. Local web designer.',ogTitle:'Local Business Websites | Atlas Web Development',ogDescription:'Professional websites for small businesses in Bixby & Tulsa. Free mockup, 2-week delivery, starting at $199.'};const s=C.seo;return\`<div class="sec-header"><div class="sec-title">SEO</div><div class="sec-desc">What Google sees. The title and description show up in search results. Keep them accurate and under the character limits shown.</div></div><div class="card"><div class="card-title">🔍 Google search result</div><div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:16px;margin-bottom:20px;font-family:Arial,sans-serif"><div style="font-size:12px;color:#006621;margin-bottom:2px">atlas-web-develop.com</div><div style="font-size:18px;color:#1a0dab;margin-bottom:4px" id="seo-title-preview">\${e(s.title)}</div><div style="font-size:13px;color:#545454" id="seo-desc-preview">\${e(s.description)}</div></div><div class="field"><label class="field-label">Page title <span style="color:#9ca3af;font-weight:400">(50–60 chars ideal)</span></label><input class="f-input" type="text" value="\${e(s.title)}" oninput="C.seo.title=this.value;document.getElementById('seo-title-preview').textContent=this.value"/></div><div class="field"><label class="field-label">Meta description <span style="color:#9ca3af;font-weight:400">(150–160 chars ideal)</span></label><textarea class="f-input" rows="3" oninput="C.seo.description=this.value;document.getElementById('seo-desc-preview').textContent=this.value">\${e(s.description)}</textarea></div></div><div class="card"><div class="card-title">📱 Social share preview</div><div class="field"><label class="field-label">OG Title (shows when shared on Facebook, iMessage, etc.)</label><input class="f-input" type="text" value="\${e(s.ogTitle)}" oninput="C.seo.ogTitle=this.value"/></div><div class="field"><label class="field-label">OG Description</label><textarea class="f-input" rows="2" oninput="C.seo.ogDescription=this.value">\${e(s.ogDescription)}</textarea></div></div>\`}
+
+function passwordSection(){return\`<div class="sec-header"><div class="sec-title">Change Password</div><div class="sec-desc">Update your admin login credentials.</div></div><div class="card"><div class="card-title">🔒 New password</div><div id="pw-msg"></div><form onsubmit="changePw(event)"><div class="field"><label class="field-label">Current password</label><input class="f-input" type="password" id="pw-current" required/></div><div class="field"><label class="field-label">New password</label><input class="f-input" type="password" id="pw-new" required/></div><div class="field"><label class="field-label">Confirm new password</label><input class="f-input" type="password" id="pw-confirm" required/></div><button type="submit" class="save-btn" style="margin-top:8px">Update password</button></form></div>\`}
+
+async function changePw(e){e.preventDefault();const cur=document.getElementById('pw-current').value;const nw=document.getElementById('pw-new').value;const cf=document.getElementById('pw-confirm').value;const msg=document.getElementById('pw-msg');if(nw!==cf){msg.innerHTML='<div style="background:#fef2f2;border:1px solid #fecaca;color:#dc2626;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px">Passwords do not match.</div>';return;}if(nw.length<3){msg.innerHTML='<div style="background:#fef2f2;border:1px solid #fecaca;color:#dc2626;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px">Password must be at least 3 characters.</div>';return;}try{const res=await fetch('/cms/change-password',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({current:cur,newPassword:nw})});const txt=await res.text();if(res.ok){msg.innerHTML='<div style="background:#f0fdf4;border:1px solid #bbf7d0;color:#16a34a;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px;font-weight:600">Password updated successfully.</div>';document.getElementById('pw-current').value='';document.getElementById('pw-new').value='';document.getElementById('pw-confirm').value='';}else{msg.innerHTML='<div style="background:#fef2f2;border:1px solid #fecaca;color:#dc2626;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px">'+txt+'</div>';}}catch{msg.innerHTML='<div style="background:#fef2f2;border:1px solid #fecaca;color:#dc2626;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px">Network error. Try again.</div>';}}
+
 function htmlSection(){if(!C.custom)C.custom={html:'',css:'',js:''};return\`<div class="sec-header"><div class="sec-title">HTML Editor</div><div class="sec-desc">Add custom HTML to the bottom of your page. Use this for embedding Google Maps, chat widgets, booking tools, or anything else.</div></div><div class="card"><div class="card-title">🧩 Custom HTML block</div><div class="field"><label class="field-label">Paste any HTML here — it will be added to your live site automatically</label><div class="code-wrap"><span class="code-lang">HTML</span><textarea class="code-editor" rows="14" placeholder="&lt;!-- Example: embed a Google Map --&gt;&#10;&lt;div style=&quot;margin:40px 0&quot;&gt;&#10;  &lt;iframe src=&quot;...&quot; width=&quot;100%&quot; height=&quot;400&quot;&gt;&lt;/iframe&gt;&#10;&lt;/div&gt;" oninput="C.custom.html=this.value" onkeydown="tabKey(event)">\${e(C.custom.html)}</textarea></div><div class="field-hint">Supports iframes, divs, scripts — anything valid HTML. Changes go live after you click Save.</div></div></div>\`}
 function codeSection(){if(!C.custom)C.custom={html:'',css:'',js:''};return\`<div class="sec-header"><div class="sec-title">CSS &amp; JavaScript</div><div class="sec-desc">Add custom styles or scripts. Great for tweaking colors, fonts, adding analytics, or live chat.</div></div><div class="card"><div class="card-title">🎨 Custom CSS</div><div class="field"><label class="field-label">Styles injected into the &lt;head&gt; of your page</label><div class="code-wrap"><span class="code-lang">CSS</span><textarea class="code-editor" rows="10" placeholder="/* Example: change the green color */&#10;:root { --green: #0d9488; }&#10;&#10;/* Example: bigger hero text */&#10;.hero h1 { font-size: 72px; }" oninput="C.custom.css=this.value" onkeydown="tabKey(event)">\${e(C.custom.css)}</textarea></div></div></div><div class="card"><div class="card-title">⚡ Custom JavaScript</div><div class="field"><label class="field-label">Scripts injected before &lt;/body&gt; — analytics, chat, tracking, etc.</label><div class="code-wrap"><span class="code-lang">JS</span><textarea class="code-editor" rows="10" placeholder="// Example: Google Analytics&#10;window.dataLayer = window.dataLayer || [];&#10;&#10;// Example: show an alert on load&#10;// alert('Welcome!');" oninput="C.custom.js=this.value" onkeydown="tabKey(event)">\${e(C.custom.js)}</textarea></div></div></div>\`}
 function tabKey(e){if(e.key==='Tab'){e.preventDefault();const s=e.target.selectionStart,en=e.target.selectionEnd;e.target.value=e.target.value.substring(0,s)+'  '+e.target.value.substring(en);e.target.selectionStart=e.target.selectionEnd=s+2}}
@@ -289,6 +337,10 @@ async function handleCms(request, env) {
     } catch { return new Response('Error', { status: 500 }); }
   }
 
+  if (path === 'change-password' && method === 'POST') {
+    return handleChangePassword(request, env);
+  }
+
   return new Response('Not found', { status: 404 });
 }
 
@@ -336,6 +388,27 @@ async function handleLogin(request, env) {
   return new Response(null, { status: 303, headers: { Location: '/cms/dashboard', 'Set-Cookie': `atlas_cms=${encodeURIComponent(session)}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=86400` } });
 }
 
+async function handleChangePassword(request, env) {
+  try {
+    const { current, newPassword } = await request.json();
+    if (!current || !newPassword) return new Response('Missing fields', { status: 400 });
+    if (newPassword.length < 3) return new Response('Password too short', { status: 400 });
+    const storedHash = await env.CONTENT.get('auth:hash');
+    const storedSalt = await env.CONTENT.get('auth:salt');
+    const currentHash = await hashPassword(current, storedSalt || '');
+    if (!timingSafeEqual(currentHash, storedHash || '')) {
+      return new Response('Current password is incorrect', { status: 401 });
+    }
+    const saltBytes = new Uint8Array(16);
+    crypto.getRandomValues(saltBytes);
+    const newSalt = Array.from(saltBytes).map(b => b.toString(16).padStart(2, '0')).join('');
+    const newHash = await hashPassword(newPassword, newSalt);
+    await env.CONTENT.put('auth:hash', newHash);
+    await env.CONTENT.put('auth:salt', newSalt);
+    return new Response('OK');
+  } catch { return new Response('Error', { status: 500 }); }
+}
+
 // ── Main Worker ──────────────────────────────────────────
 
 export default {
@@ -359,21 +432,63 @@ export default {
       return handleCms(request, env);
     }
 
-    // Inject custom CSS/JS/HTML into the main page
+    // Inject dynamic content into the main page
     if ((url.pathname === '/' || url.pathname === '/index.html') && request.method === 'GET') {
       const assetRes = await env.ASSETS.fetch(request);
       try {
         const content = await env.CONTENT.get('site_content', { type: 'json' });
-        const custom = content?.custom;
-        if (custom && (custom.css || custom.js || custom.html)) {
-          let html = await assetRes.text();
-          if (custom.css) html = html.replace('</head>', `<style>${custom.css}</style></head>`);
-          if (custom.html) html = html.replace('</body>', `${custom.html}\n</body>`);
-          if (custom.js) html = html.replace('</body>', `<script>${custom.js}<\/script>\n</body>`);
-          return new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' } });
+        if (!content) return assetRes;
+        let html = await assetRes.text();
+        let changed = false;
+
+        // SEO
+        const seo = content.seo;
+        if (seo) {
+          if (seo.title) { html = html.replace(/<title>[^<]*<\/title>/, `<title>${seo.title}</title>`); changed = true; }
+          if (seo.description) { html = html.replace(/(<meta name="description" content=")[^"]*(")/,`$1${seo.description}$2`); changed = true; }
+          if (seo.ogTitle) { html = html.replace(/(<meta property="og:title" content=")[^"]*(")/,`$1${seo.ogTitle}$2`); changed = true; }
+          if (seo.ogDescription) { html = html.replace(/(<meta property="og:description" content=")[^"]*(")/,`$1${seo.ogDescription}$2`); changed = true; }
         }
-      } catch {}
-      return assetRes;
+
+        // Announcement bar (injected before <nav)
+        const ann = content.announcement;
+        if (ann?.enabled && ann?.text) {
+          const bar = `<div style="background:${ann.bg||'#16a34a'};color:#fff;text-align:center;padding:11px 20px;font-size:14px;font-weight:600;letter-spacing:-.1px;">${ann.text}</div>`;
+          html = html.replace('<nav', bar + '\n<nav'); changed = true;
+        }
+
+        // Contact + stats + hours update script
+        const extras = {};
+        if (content.contact) extras.contact = content.contact;
+        if (content.stats) extras.stats = content.stats;
+        if (content.hours) extras.hours = content.hours;
+        if (Object.keys(extras).length) {
+          const injectScript = `<script>(function(){const D=${JSON.stringify(extras)};
+if(D.contact){const s=id=>document.getElementById(id);
+if(s('cms-phone'))s('cms-phone').textContent=D.contact.phone;
+if(s('cms-nav-phone'))s('cms-nav-phone').textContent=D.contact.phone;
+if(s('cms-email'))s('cms-email').textContent=D.contact.email;
+if(s('cms-response'))s('cms-response').textContent=D.contact.responseTime;
+if(s('cms-area'))s('cms-area').textContent=D.contact.serviceArea;
+if(s('cms-phone'))s('cms-phone').href='tel:'+D.contact.phone.replace(/\\D/g,'');
+if(s('cms-nav-phone'))s('cms-nav-phone').href='tel:'+D.contact.phone.replace(/\\D/g,'');}
+if(D.stats){document.querySelectorAll('.stat-num').forEach(function(el,i){var st=D.stats[i];if(!st)return;el.dataset.target=st.value;el.dataset.prefix=st.prefix||'';el.dataset.suffix=st.suffix||'';el.textContent=(st.prefix||'')+'0'+(st.suffix||'');});document.querySelectorAll('.stat-desc').forEach(function(el,i){if(D.stats[i])el.textContent=D.stats[i].label;});}
+if(D.hours){var el=document.getElementById('cms-hours');var wrap=document.getElementById('cms-hours-wrap');if(el){var days=['mon','tue','wed','thu','fri','sat','sun'],names=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];el.innerHTML=days.map(function(d,i){return'<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #f3f4f6;font-size:14px;"><span style="color:#6b7280">'+names[i]+'</span><span style="font-weight:600">'+(D.hours[d]||'')+'</span></div>';}).join('');if(wrap)wrap.style.display='block';}}
+})();<\/script>`;
+          html = html.replace('</body>', injectScript + '\n</body>'); changed = true;
+        }
+
+        // Custom CSS / HTML / JS
+        const custom = content.custom;
+        if (custom) {
+          if (custom.css) { html = html.replace('</head>', `<style>${custom.css}</style></head>`); changed = true; }
+          if (custom.html) { html = html.replace('</body>', `${custom.html}\n</body>`); changed = true; }
+          if (custom.js) { html = html.replace('</body>', `<script>${custom.js}<\/script>\n</body>`); changed = true; }
+        }
+
+        if (!changed) return assetRes;
+        return new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' } });
+      } catch { return assetRes; }
     }
 
     // Everything else — serve static assets
