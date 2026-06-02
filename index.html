@@ -335,37 +335,22 @@
     .card-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
     .card-text { font-size: 13px; color: var(--muted); line-height: 1.65; }
 
-    /* ── SERVICE BLOCKS ── */
-    .svc-blocks { display: flex; flex-direction: column; gap: 20px; margin-bottom: 52px; }
-    .svc-block {
-      display: grid; grid-template-columns: 72px 1fr; gap: 28px;
-      align-items: start;
-      background: #fff; border: 1px solid var(--border);
-      border-radius: 14px; padding: 32px;
-      transition: box-shadow .2s, border-color .2s;
+    /* ── SERVICE NUMBERED LIST ── */
+    .svc-numbered { display: flex; flex-direction: column; margin-bottom: 48px; }
+    .svc-num-item {
+      display: grid; grid-template-columns: 56px 1fr; gap: 24px;
+      align-items: center; padding: 28px 0;
+      border-bottom: 1px solid var(--border);
     }
-    .svc-block:hover { box-shadow: 0 4px 24px rgba(0,0,0,.07); border-color: var(--green-bdr); }
-    .svc-icon-wrap {
-      display: flex; align-items: flex-start; justify-content: center;
-      padding-top: 4px;
-    }
-    .svc-icon {
-      width: 56px; height: 56px; border-radius: 14px;
-      background: var(--green-bg); border: 1px solid var(--green-bdr);
+    .svc-num-item:last-child { border-bottom: none; }
+    .svc-num {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: var(--green); color: #fff;
       display: flex; align-items: center; justify-content: center;
-      font-size: 24px; flex-shrink: 0;
+      font-size: 20px; font-weight: 800; flex-shrink: 0;
     }
-    .svc-content h3 { font-size: 20px; font-weight: 700; letter-spacing: -.3px; margin-bottom: 10px; }
-    .svc-content > p { font-size: 15px; color: var(--muted); line-height: 1.75; margin-bottom: 16px; }
-    .svc-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .svc-list li {
-      font-size: 13px; color: #374151;
-      display: flex; align-items: center; gap: 10px; line-height: 1.5;
-    }
-    .svc-list li::before {
-      content: '✓'; color: var(--green); font-weight: 700;
-      font-size: 13px; flex-shrink: 0;
-    }
+    .svc-num-content h3 { font-size: 18px; font-weight: 700; letter-spacing: -.3px; margin-bottom: 8px; }
+    .svc-num-content p { font-size: 14px; color: var(--muted); line-height: 1.75; }
 
     /* ── BUSINESS TYPE STRIP ── */
     .biz-types {
@@ -705,56 +690,28 @@
     <h2 class="sec-h reveal reveal-delay-1">Three reasons your business needs a website</h2>
     <p class="sec-p reveal reveal-delay-2">Not a brochure. A tool that works for you around the clock, while you're on the job.</p>
 
-    <div class="svc-blocks">
-
-      <div class="svc-block reveal">
-        <div class="svc-icon-wrap">
-          <div class="svc-icon">🔍</div>
-        </div>
-        <div class="svc-content">
+    <div class="svc-numbered">
+      <div class="svc-num-item reveal">
+        <div class="svc-num">1</div>
+        <div class="svc-num-content">
           <h3>Get found on Google</h3>
-          <p>When someone searches "plumber near Bixby" or "best HVAC in Tulsa," your business shows up, not your competitor's. We handle every piece of it.</p>
-          <ul class="svc-list">
-            <li>Google Maps listing setup & optimization</li>
-            <li>Local SEO: city and neighborhood targeting</li>
-            <li>Schema markup so Google knows exactly what you do</li>
-            <li>Fast load times (Google ranks faster sites higher)</li>
-          </ul>
+          <p>When someone searches "plumber near Bixby" or "HVAC in Tulsa," your business shows up, not your competitor's. We handle Google Maps setup, local SEO, and schema markup so you rank where it counts.</p>
         </div>
       </div>
-
-      <div class="svc-block reveal reveal-delay-1">
-        <div class="svc-icon-wrap">
-          <div class="svc-icon">📱</div>
-        </div>
-        <div class="svc-content">
-          <h3>Built to convert on mobile</h3>
-          <p>Over 80% of your customers will find you on their phone. If your site looks bad or loads slow on mobile, they leave and call someone else. We design mobile-first, every time.</p>
-          <ul class="svc-list">
-            <li>Tap-to-call button front and center</li>
-            <li>Fast load: under 2 seconds on mobile</li>
-            <li>Easy to read, easy to navigate on any screen</li>
-            <li>Contact form that works with one thumb</li>
-          </ul>
+      <div class="svc-num-item reveal reveal-delay-1">
+        <div class="svc-num">2</div>
+        <div class="svc-num-content">
+          <h3>Built for mobile</h3>
+          <p>Over 80% of your customers will find you on their phone. We design mobile-first every time, with a tap-to-call button front and center and pages that load in under 2 seconds.</p>
         </div>
       </div>
-
-      <div class="svc-block reveal reveal-delay-2">
-        <div class="svc-icon-wrap">
-          <div class="svc-icon">⚡</div>
-        </div>
-        <div class="svc-content">
-          <h3>Everything your business needs</h3>
-          <p>One site. All the tools. No more sending people to your Facebook page and hoping they find your number. Everything a customer needs to hire you. Right there.</p>
-          <ul class="svc-list">
-            <li>Quote request & contact forms</li>
-            <li>Photo gallery to show off your work</li>
-            <li>Google Reviews pulled in automatically</li>
-            <li>Your hours, service area, and credentials</li>
-          </ul>
+      <div class="svc-num-item reveal reveal-delay-2">
+        <div class="svc-num">3</div>
+        <div class="svc-num-content">
+          <h3>Everything included</h3>
+          <p>Forms, photo gallery, Google Reviews, your hours and service area all in one place. No more sending people to your Facebook page hoping they find your number.</p>
         </div>
       </div>
-
     </div>
 
     <!-- Business type strip -->
