@@ -1153,13 +1153,13 @@ document.getElementById('contact-form').addEventListener('submit', async e => {
           const green = (c.hero.headlineGreen || '').trim();
           const words = white.split(/\s+/).filter(Boolean);
           const delays = [2.9, 3.05, 3.2, 3.35, 3.5, 3.65, 3.8, 3.95];
-          const mid = Math.ceil(words.length / 2);
           let html = '';
           words.forEach((w, i) => {
-            html += `<span class="hero-word" style="animation-delay:${delays[i] || (2.9 + i * 0.15)}s">${w}</span>`;
-            if (i === mid - 1) html += '<br>';
+            const space = i > 0 ? ' ' : '';
+            html += `<span class="hero-word" style="animation-delay:${delays[i] || (2.9 + i * 0.15)}s">${space}${w}</span>`;
           });
-          html += `<span class="hero-word green" style="animation-delay:${delays[words.length] || 3.5}s"> ${green}</span>`;
+          html += '<br>';
+          html += `<span class="hero-word green" style="animation-delay:${delays[words.length] || 3.5}s">${green}</span>`;
           h1.innerHTML = html;
         }
       }
