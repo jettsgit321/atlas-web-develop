@@ -1155,7 +1155,7 @@ document.getElementById('contact-form').addEventListener('submit', async e => {
     if (c.announcement?.enabled && c.announcement?.text) {
       const bar = document.createElement('div');
       bar.style.cssText = `background:${c.announcement.bg||'#16a34a'};color:#fff;text-align:center;padding:10px 20px;font-size:14px;font-weight:500;line-height:1.5;`;
-      bar.textContent = c.announcement.text;
+      bar.innerHTML = c.announcement.text;
       const nav = document.querySelector('nav');
       if (nav) nav.parentNode.insertBefore(bar, nav);
     }
