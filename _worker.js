@@ -124,9 +124,94 @@ function loginPage(error = '') {
 
 function dashboardPage(contentData) {
   const c = JSON.stringify(contentData || DEFAULT_CONTENT);
-  return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Atlas Admin Dashboard</title><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;background:#f3f4f6;color:#111;min-height:100vh}.topbar{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}.brand{display:flex;align-items:center;gap:10px}.brand-icon{width:32px;height:32px;background:#16a34a;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800}.brand-name{font-size:15px;font-weight:700}.topbar-right{display:flex;align-items:center;gap:12px}.view-link{font-size:13px;color:#6b7280;text-decoration:none;font-weight:500;padding:6px 12px;border-radius:8px;transition:background .15s}.view-link:hover{background:#f3f4f6;color:#111}.logout-btn{background:transparent;border:1px solid #e5e7eb;border-radius:8px;padding:6px 14px;font-size:13px;font-weight:500;color:#6b7280;cursor:pointer;font-family:inherit;transition:all .15s}.logout-btn:hover{border-color:#fca5a5;color:#dc2626}.layout{display:flex;min-height:calc(100vh - 56px - 57px)}.sidebar{width:210px;background:#fff;border-right:1px solid #e5e7eb;padding:14px 10px;flex-shrink:0}.sidebar-label{font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.8px;padding:0 8px;margin-bottom:8px;margin-top:4px}.nav-btn{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:500;color:#374151;transition:all .15s;margin-bottom:2px;border:none;background:transparent;width:100%;text-align:left;font-family:inherit}.nav-btn:hover{background:#f3f4f6}.nav-btn.active{background:#f0fdf4;color:#16a34a;font-weight:600}.nav-icon{font-size:15px;width:20px;text-align:center}.main{flex:1;padding:28px 32px;overflow-y:auto}.sec-header{margin-bottom:24px}.sec-title{font-size:22px;font-weight:700;letter-spacing:-.3px}.sec-desc{font-size:13px;color:#6b7280;margin-top:4px}.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:24px;margin-bottom:16px}.card-title{font-size:13px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #f3f4f6}.field{margin-bottom:14px}.field:last-child{margin-bottom:0}.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field-label{display:block;font-size:12px;font-weight:600;color:#374151;margin-bottom:4px}.field-hint{font-size:11px;color:#9ca3af;margin-top:4px}.f-input{width:100%;border:1px solid #e5e7eb;border-radius:8px;padding:9px 12px;font-size:14px;font-family:inherit;color:#111;outline:none;transition:border-color .15s;background:#fff;resize:vertical}.f-input:focus{border-color:#16a34a;box-shadow:0 0 0 3px #dcfce7}.tab-row{display:flex;gap:8px;margin-bottom:20px}.tab{background:transparent;border:1px solid #e5e7eb;border-radius:20px;padding:6px 16px;font-size:13px;font-weight:500;color:#6b7280;cursor:pointer;transition:all .15s;font-family:inherit}.tab.active{background:#f0fdf4;border-color:#16a34a;color:#16a34a;font-weight:600}.feat-list{display:flex;flex-direction:column;gap:6px}.feat-row{display:flex;gap:8px;align-items:center}.feat-row .f-input{flex:1}.del-btn{flex-shrink:0;width:30px;height:36px;background:transparent;border:1px solid #e5e7eb;border-radius:6px;cursor:pointer;color:#9ca3af;font-size:18px;line-height:1;transition:all .15s;display:flex;align-items:center;justify-content:center}.del-btn:hover{border-color:#fca5a5;color:#dc2626;background:#fef2f2}.add-btn{margin-top:8px;background:transparent;border:1px solid #e5e7eb;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:500;color:#6b7280;cursor:pointer;transition:all .15s;font-family:inherit}.add-btn:hover{border-color:#16a34a;color:#16a34a;background:#f0fdf4}.save-bar{background:#fff;border-top:1px solid #e5e7eb;padding:12px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;bottom:0}.save-msg{font-size:13px;color:#9ca3af}.save-msg.ok{color:#16a34a;font-weight:500}.save-msg.err{color:#dc2626}.save-btn{background:#16a34a;color:#fff;border:none;border-radius:8px;padding:10px 26px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .15s}.save-btn:hover{background:#15803d}.save-btn:disabled{background:#9ca3af;cursor:not-allowed}.toast{position:fixed;bottom:80px;right:24px;background:#111;color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:500;z-index:999;opacity:0;transform:translateY(8px);transition:all .25s;pointer-events:none}.toast.show{opacity:1;transform:translateY(0)}.toast.ok{background:#16a34a}.toast.err{background:#dc2626}@media(max-width:640px){.sidebar{display:none}.main{padding:16px}.field-row{grid-template-columns:1fr}}</style></head><body>
-<div class="topbar"><div class="brand"><div class="brand-icon">A</div><div class="brand-name">Atlas Admin</div></div><div class="topbar-right"><a href="https://atlas-web-develop.com" target="_blank" class="view-link">View site →</a><form method="POST" action="/cms/logout" style="display:inline"><button class="logout-btn">Sign out</button></form></div></div>
-<div class="layout"><nav class="sidebar"><div class="sidebar-label">Sections</div><button class="nav-btn active" onclick="nav('hero',this)"><span class="nav-icon">🏠</span> Hero</button><button class="nav-btn" onclick="nav('services',this)"><span class="nav-icon">⚡</span> Services</button><button class="nav-btn" onclick="nav('pricing',this)"><span class="nav-icon">💰</span> Pricing</button><button class="nav-btn" onclick="nav('testimonials',this)"><span class="nav-icon">⭐</span> Testimonials</button><button class="nav-btn" onclick="nav('faqs',this)"><span class="nav-icon">❓</span> FAQs</button></nav><div class="main" id="main"></div></div>
+  return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Atlas Admin</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;background:#f0f2f5;color:#111;min-height:100vh}
+/* Topbar */
+.topbar{background:linear-gradient(135deg,#0a2e1e 0%,#134e3a 100%);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-icon{width:36px;height:36px;background:#16a34a;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:800;box-shadow:0 2px 8px rgba(22,163,74,.4)}
+.brand-name{font-size:16px;font-weight:700;color:#fff;letter-spacing:-.2px}
+.brand-sub{font-size:11px;color:#86efac;font-weight:500;margin-top:1px}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.view-link{font-size:13px;color:rgba(255,255,255,.75);text-decoration:none;font-weight:500;padding:7px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.2);transition:all .15s;display:flex;align-items:center;gap:5px}
+.view-link:hover{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.4)}
+.logout-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:7px 14px;font-size:13px;font-weight:500;color:rgba(255,255,255,.75);cursor:pointer;font-family:inherit;transition:all .15s}
+.logout-btn:hover{background:rgba(220,38,38,.2);border-color:rgba(252,165,165,.4);color:#fca5a5}
+/* Layout */
+.layout{display:flex;min-height:calc(100vh - 60px - 57px)}
+/* Sidebar */
+.sidebar{width:220px;background:linear-gradient(180deg,#0f3d2e 0%,#0a2e1e 100%);padding:20px 12px;flex-shrink:0;display:flex;flex-direction:column;gap:4px}
+.sidebar-section{font-size:10px;font-weight:700;color:rgba(134,239,172,.6);text-transform:uppercase;letter-spacing:1px;padding:0 10px;margin-bottom:6px;margin-top:8px}
+.sidebar-section:first-child{margin-top:0}
+.nav-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:500;color:rgba(255,255,255,.65);transition:all .15s;border:none;background:transparent;width:100%;text-align:left;font-family:inherit}
+.nav-btn:hover{background:rgba(255,255,255,.08);color:rgba(255,255,255,.9)}
+.nav-btn.active{background:linear-gradient(135deg,rgba(22,163,74,.35),rgba(22,163,74,.2));color:#4ade80;font-weight:600;border:1px solid rgba(74,222,128,.2)}
+.nav-icon{font-size:16px;width:22px;text-align:center;flex-shrink:0}
+.nav-label{flex:1}
+/* Main */
+.main{flex:1;padding:32px;overflow-y:auto;max-width:860px}
+.sec-header{margin-bottom:28px}
+.sec-title{font-size:24px;font-weight:700;letter-spacing:-.4px;color:#111}
+.sec-desc{font-size:14px;color:#6b7280;margin-top:5px;line-height:1.5}
+/* Cards */
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.card-title{font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.8px;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;gap:6px}
+/* Fields */
+.field{margin-bottom:16px}.field:last-child{margin-bottom:0}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field-label{display:block;font-size:12px;font-weight:600;color:#374151;margin-bottom:5px}
+.field-hint{font-size:11px;color:#9ca3af;margin-top:4px}
+.f-input{width:100%;border:1.5px solid #e5e7eb;border-radius:9px;padding:10px 13px;font-size:14px;font-family:inherit;color:#111;outline:none;transition:all .15s;background:#fff;resize:vertical;line-height:1.5}
+.f-input:focus{border-color:#16a34a;box-shadow:0 0 0 3px rgba(22,163,74,.12)}
+/* Tabs */
+.tab-row{display:flex;gap:8px;margin-bottom:22px}
+.tab{background:#fff;border:1.5px solid #e5e7eb;border-radius:20px;padding:7px 18px;font-size:13px;font-weight:500;color:#6b7280;cursor:pointer;transition:all .15s;font-family:inherit;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.tab.active{background:linear-gradient(135deg,#15803d,#16a34a);border-color:transparent;color:#fff;font-weight:600;box-shadow:0 2px 8px rgba(22,163,74,.3)}
+/* Feature list */
+.feat-list{display:flex;flex-direction:column;gap:7px}
+.feat-row{display:flex;gap:8px;align-items:center}
+.feat-row .f-input{flex:1}
+.del-btn{flex-shrink:0;width:34px;height:38px;background:transparent;border:1.5px solid #e5e7eb;border-radius:8px;cursor:pointer;color:#9ca3af;font-size:18px;transition:all .15s;display:flex;align-items:center;justify-content:center}
+.del-btn:hover{border-color:#fca5a5;color:#dc2626;background:#fef2f2}
+.add-btn{margin-top:10px;background:#f0fdf4;border:1.5px dashed #86efac;border-radius:9px;padding:8px 16px;font-size:13px;font-weight:600;color:#16a34a;cursor:pointer;transition:all .15s;font-family:inherit;width:100%;text-align:center}
+.add-btn:hover{background:#dcfce7;border-color:#4ade80}
+/* Save bar */
+.save-bar{background:#fff;border-top:1px solid #e5e7eb;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;bottom:0;box-shadow:0 -2px 12px rgba(0,0,0,.06)}
+.save-msg{font-size:13px;color:#9ca3af}
+.save-msg.ok{color:#16a34a;font-weight:600}
+.save-msg.err{color:#dc2626;font-weight:600}
+.save-btn{background:linear-gradient(135deg,#15803d,#16a34a);color:#fff;border:none;border-radius:9px;padding:11px 28px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(22,163,74,.3)}
+.save-btn:hover{box-shadow:0 4px 16px rgba(22,163,74,.45);transform:translateY(-1px)}
+.save-btn:disabled{background:#9ca3af;box-shadow:none;transform:none;cursor:not-allowed}
+/* Toast */
+.toast{position:fixed;bottom:84px;right:24px;background:#111;color:#fff;padding:13px 20px;border-radius:12px;font-size:14px;font-weight:500;z-index:999;opacity:0;transform:translateY(10px);transition:all .25s;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,.25)}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.ok{background:linear-gradient(135deg,#15803d,#16a34a)}
+.toast.err{background:#dc2626}
+@media(max-width:768px){.sidebar{display:none}.main{padding:20px}.field-row{grid-template-columns:1fr}}
+</style></head><body>
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-icon">A</div>
+    <div><div class="brand-name">Atlas Admin</div><div class="brand-sub">atlas-web-develop.com</div></div>
+  </div>
+  <div class="topbar-right">
+    <a href="https://atlas-web-develop.com" target="_blank" class="view-link">↗ View site</a>
+    <form method="POST" action="/cms/logout" style="display:inline"><button class="logout-btn">Sign out</button></form>
+  </div>
+</div>
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-section">Sections</div>
+    <button class="nav-btn active" onclick="nav('hero',this)"><span class="nav-icon">🏠</span><span class="nav-label">Hero</span></button>
+    <button class="nav-btn" onclick="nav('services',this)"><span class="nav-icon">⚡</span><span class="nav-label">Services</span></button>
+    <button class="nav-btn" onclick="nav('pricing',this)"><span class="nav-icon">💰</span><span class="nav-label">Pricing</span></button>
+    <button class="nav-btn" onclick="nav('testimonials',this)"><span class="nav-icon">⭐</span><span class="nav-label">Testimonials</span></button>
+    <button class="nav-btn" onclick="nav('faqs',this)"><span class="nav-icon">❓</span><span class="nav-label">FAQs</span></button>
+  </nav>
+  <div class="main" id="main"></div>
+</div>
 <div class="save-bar"><span class="save-msg" id="save-msg">Edit any field and click Save when ready.</span><button class="save-btn" id="save-btn" onclick="saveAll()">Save changes</button></div>
 <div class="toast" id="toast"></div>
 <script>
