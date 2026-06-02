@@ -1118,7 +1118,10 @@ const statObserver = new IntersectionObserver(entries => {
     }
   });
 }, { threshold: 0.2 });
-document.querySelectorAll('.stat-item').forEach(el => statObserver.observe(el));
+// Delay observer until intro overlay has fully faded (2.8s)
+setTimeout(() => {
+  document.querySelectorAll('.stat-item').forEach(el => statObserver.observe(el));
+}, 2900);
 
 // Typewriter
 (function() {
