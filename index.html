@@ -187,10 +187,79 @@
       font-weight: 800; letter-spacing: -2px;
       line-height: 1.08; color: #fff; margin-bottom: 20px;
     }
-    .hero h1 span { color: #4ade80; }
+    .hero h1 .hero-word {
+      display: inline-block;
+      opacity: 0; transform: translateY(28px);
+      animation: heroWordUp 0.55s cubic-bezier(0.34,1.1,0.64,1) forwards;
+    }
+    .hero h1 .hero-word.green { color: #4ade80; }
+    @keyframes heroWordUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
     .hero p {
       font-size: 17px; color: rgba(255,255,255,.7);
       max-width: 480px; margin: 0 auto 40px; line-height: 1.75;
+      min-height: 1.75em;
+    }
+    /* Hero button pop-in */
+    .hero .hero-btns {
+      opacity: 0; transform: translateY(16px);
+      animation: heroBtnsIn 0.5s cubic-bezier(0.34,1.1,0.64,1) 1.4s forwards;
+    }
+    @keyframes heroBtnsIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* Shimmer on primary CTA */
+    .btn-green { position: relative; overflow: hidden; }
+    .btn-green::after {
+      content: '';
+      position: absolute; top: -50%; left: -75%;
+      width: 50%; height: 200%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
+      transform: skewX(-20deg);
+      animation: btnShimmer 3.5s ease-in-out 2s infinite;
+    }
+    @keyframes btnShimmer {
+      0% { left: -75%; }
+      40%, 100% { left: 125%; }
+    }
+    /* Pricing card glow */
+    .pricing-card.featured {
+      animation: featuredPulse 2.8s ease-in-out 0.8s infinite;
+    }
+    @keyframes featuredPulse {
+      0%, 100% { box-shadow: 0 8px 32px rgba(22,163,74,.18), 0 0 0 2px #bbf7d0; }
+      50%       { box-shadow: 0 8px 48px rgba(22,163,74,.45), 0 0 0 3px #86efac; }
+    }
+    .pricing-card.featured:hover {
+      animation: none;
+      box-shadow: 0 12px 56px rgba(22,163,74,.6), 0 0 0 3px #4ade80;
+    }
+    /* Stat counter strip */
+    .stat-strip {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      background: var(--panel); margin: 0;
+    }
+    .stat-item {
+      padding: 32px 24px; text-align: center;
+      border-right: 1px solid var(--border);
+      opacity: 0; transform: translateY(20px);
+      transition: opacity .5s ease, transform .5s ease;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-item.visible { opacity: 1; transform: translateY(0); }
+    .stat-item:nth-child(2) { transition-delay: .1s; }
+    .stat-item:nth-child(3) { transition-delay: .2s; }
+    .stat-num {
+      font-size: 42px; font-weight: 800; letter-spacing: -2px;
+      color: var(--green); line-height: 1;
+    }
+    .stat-desc { font-size: 13px; color: var(--muted); font-weight: 500; margin-top: 6px; }
+    @media (max-width: 640px) {
+      .stat-strip { grid-template-columns: 1fr; }
+      .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .stat-item:last-child { border-bottom: none; }
     }
     .hero-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
     .hero-wave {
@@ -502,8 +571,14 @@
 <div class="hero-wrap">
   <div class="hero">
     <div class="hero-tag">Bixby · Jenks · Broken Arrow · Tulsa</div>
-    <h1>Your business deserves<br>a <span>real website</span></h1>
-    <p>Professional websites for local businesses in the Bixby and Tulsa area. Built in about 2 weeks. You see a free mockup before you pay anything.</p>
+    <h1>
+      <span class="hero-word" style="animation-delay:.2s">Your</span>
+      <span class="hero-word" style="animation-delay:.32s"> business</span>
+      <span class="hero-word" style="animation-delay:.44s"> deserves</span><br>
+      <span class="hero-word" style="animation-delay:.56s">a</span>
+      <span class="hero-word green" style="animation-delay:.68s"> real website</span>
+    </h1>
+    <p id="hero-typewriter"></p>
     <div class="hero-btns">
       <a href="#contact" class="btn-green">Get your free mockup</a>
       <a href="#services" class="btn-outline">See what's included →</a>
@@ -535,6 +610,22 @@
   <div class="trust-item">
     <div class="trust-icon">💰</div>
     Starting at $199
+  </div>
+</div>
+
+<!-- STAT STRIP -->
+<div class="stat-strip">
+  <div class="stat-item">
+    <div class="stat-num" data-target="199" data-prefix="$">$0</div>
+    <div class="stat-desc">Starting price</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" data-target="2" data-suffix=" weeks">0 weeks</div>
+    <div class="stat-desc">Average delivery</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" data-target="99" data-prefix="$" data-suffix="/mo">$0/mo</div>
+    <div class="stat-desc">All-in monthly plan</div>
   </div>
 </div>
 
@@ -884,6 +975,48 @@ const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Stat counter
+function animateCounter(el) {
+  const target = parseInt(el.dataset.target);
+  const prefix = el.dataset.prefix || '';
+  const suffix = el.dataset.suffix || '';
+  const duration = 1400;
+  const start = performance.now();
+  function tick(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = prefix + Math.round(ease * target) + suffix;
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+const statObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      animateCounter(e.target.querySelector('.stat-num'));
+      statObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.2 });
+document.querySelectorAll('.stat-item').forEach(el => statObserver.observe(el));
+
+// Typewriter
+(function() {
+  const el = document.getElementById('hero-typewriter');
+  if (!el) return;
+  const text = 'Professional websites for local businesses in the Bixby and Tulsa area. Built in about 2 weeks. You see a free mockup before you pay anything.';
+  let i = 0;
+  function type() {
+    if (i <= text.length) {
+      el.textContent = text.slice(0, i);
+      i++;
+      setTimeout(type, i < 30 ? 55 : 28);
+    }
+  }
+  setTimeout(type, 1050);
+})();
 
 function toggleFaq(btn) {
   const item = btn.parentElement;
