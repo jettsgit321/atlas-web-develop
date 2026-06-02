@@ -1012,7 +1012,7 @@ document.querySelectorAll('.stat-item').forEach(el => statObserver.observe(el));
     if (i <= text.length) {
       el.textContent = text.slice(0, i);
       i++;
-      setTimeout(type, i < 30 ? 55 : 28);
+      setTimeout(type, i < 30 ? 40 : 20);
     }
   }
   setTimeout(type, 3700);
