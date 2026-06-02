@@ -39,7 +39,8 @@ const DEFAULT_CONTENT = {
     { q: 'How long does it take to build?', a: "About 2 weeks from the time you approve the mockup. First I build a free mockup so you can see exactly what you're getting, no commitment until you say it looks good. Once approved, the real site follows in roughly 2 weeks depending on how quickly you can get me photos and info." },
     { q: 'What do you need from me to get started?', a: "Not much. Your business name, phone number, a description of what you do, your service area, and any photos you want on the site. I'll handle the rest: writing, layout, SEO setup, everything. Most clients send me a few texts and we're off." },
     { q: 'Can I cancel the monthly plan?', a: "Yes, any time. No long-term contracts. If you cancel, your domain name is yours to keep. That's always in your name. The website itself comes down since it's part of the monthly plan, but you walk away with your domain and can use it however you like." }
-  ]
+  ],
+  custom: { html: '', css: '', js: '' }
 };
 
 // ── Crypto ──────────────────────────────────────────────
@@ -189,6 +190,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;background:
 .toast.show{opacity:1;transform:translateY(0)}
 .toast.ok{background:linear-gradient(135deg,#15803d,#16a34a)}
 .toast.err{background:#dc2626}
+/* Code editor */
+.code-wrap{position:relative}
+.code-lang{position:absolute;top:10px;right:12px;font-size:10px;font-weight:700;color:#4b5563;text-transform:uppercase;letter-spacing:.8px;background:#f3f4f6;padding:2px 8px;border-radius:4px}
+.code-editor{width:100%;font-family:'Courier New',Consolas,'Monaco',monospace;font-size:13px;background:#1a1d23;color:#abb2bf;border:1.5px solid #2d3139;border-radius:10px;padding:14px;min-height:180px;line-height:1.7;resize:vertical;outline:none;transition:border-color .15s;tab-size:2;-moz-tab-size:2}
+.code-editor:focus{border-color:#16a34a;box-shadow:0 0 0 3px rgba(22,163,74,.15)}
+.code-editor::placeholder{color:#4b5563}
+.sidebar-divider{height:1px;background:rgba(255,255,255,.07);margin:8px 4px}
 @media(max-width:768px){.sidebar{display:none}.main{padding:20px}.field-row{grid-template-columns:1fr}}
 </style></head><body>
 <div class="topbar">
@@ -209,6 +217,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;background:
     <button class="nav-btn" onclick="nav('pricing',this)"><span class="nav-icon">💰</span><span class="nav-label">Pricing</span></button>
     <button class="nav-btn" onclick="nav('testimonials',this)"><span class="nav-icon">⭐</span><span class="nav-label">Testimonials</span></button>
     <button class="nav-btn" onclick="nav('faqs',this)"><span class="nav-icon">❓</span><span class="nav-label">FAQs</span></button>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">Advanced</div>
+    <button class="nav-btn" onclick="nav('html',this)"><span class="nav-icon">🧩</span><span class="nav-label">HTML Editor</span></button>
+    <button class="nav-btn" onclick="nav('code',this)"><span class="nav-icon">💻</span><span class="nav-label">CSS &amp; JS</span></button>
   </nav>
   <div class="main" id="main"></div>
 </div>
@@ -218,7 +230,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;background:
 const C=${c};let pTab='landing';
 function e(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function nav(name,btn){document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render(name)}
-function render(name){const el=document.getElementById('main');if(name==='hero')el.innerHTML=heroSection();else if(name==='services')el.innerHTML=servicesSection();else if(name==='pricing')el.innerHTML=pricingSection();else if(name==='testimonials')el.innerHTML=testimonialsSection();else if(name==='faqs')el.innerHTML=faqsSection()}
+function render(name){const el=document.getElementById('main');if(name==='hero')el.innerHTML=heroSection();else if(name==='services')el.innerHTML=servicesSection();else if(name==='pricing')el.innerHTML=pricingSection();else if(name==='testimonials')el.innerHTML=testimonialsSection();else if(name==='faqs')el.innerHTML=faqsSection();else if(name==='html')el.innerHTML=htmlSection();else if(name==='code')el.innerHTML=codeSection()}
 function heroSection(){const h=C.hero||{};return\`<div class="sec-header"><div class="sec-title">Hero</div><div class="sec-desc">The first thing visitors see.</div></div><div class="card"><div class="card-title">Location tag</div><div class="field"><label class="field-label">Tag above headline</label><input class="f-input" type="text" value="\${e(h.tag)}" oninput="C.hero.tag=this.value"/></div></div><div class="card"><div class="card-title">Headline</div><div class="field"><label class="field-label">White part</label><input class="f-input" type="text" value="\${e(h.headlineWhite)}" oninput="C.hero.headlineWhite=this.value"/></div><div class="field"><label class="field-label">Green part</label><input class="f-input" type="text" value="\${e(h.headlineGreen)}" oninput="C.hero.headlineGreen=this.value"/></div></div><div class="card"><div class="card-title">Typewriter text</div><div class="field"><label class="field-label">Text that types out below the headline</label><textarea class="f-input" rows="3" oninput="C.hero.typewriter=this.value">\${e(h.typewriter)}</textarea></div></div>\`}
 function servicesSection(){const s=C.services||[];return\`<div class="sec-header"><div class="sec-title">Services</div><div class="sec-desc">The 3 numbered items.</div></div>\${s.map((sv,i)=>\`<div class="card"><div class="card-title">Item \${i+1}</div><div class="field"><label class="field-label">Title</label><input class="f-input" type="text" value="\${e(sv.title)}" oninput="C.services[\${i}].title=this.value"/></div><div class="field"><label class="field-label">Description</label><textarea class="f-input" rows="3" oninput="C.services[\${i}].desc=this.value">\${e(sv.desc)}</textarea></div></div>\`).join('')}\`}
 function pricingSection(){return\`<div class="sec-header"><div class="sec-title">Pricing</div><div class="sec-desc">Edit prices and features.</div></div><div class="tab-row"><button class="tab \${pTab==='landing'?'active':''}" onclick="pTab='landing';render('pricing')">Landing Page</button><button class="tab \${pTab==='standard'?'active':''}" onclick="pTab='standard';render('pricing')">Standard Site</button><button class="tab \${pTab==='full'?'active':''}" onclick="pTab='full';render('pricing')">Full Site</button></div>\${pricingCard(pTab)}\`}
@@ -227,6 +239,9 @@ function addFeat(plan){if(!C.pricing[plan].features)C.pricing[plan].features=[];
 function delFeat(plan,i){C.pricing[plan].features.splice(i,1);render('pricing')}
 function testimonialsSection(){const ts=C.testimonials||[];return\`<div class="sec-header"><div class="sec-title">Testimonials</div><div class="sec-desc">The 3 client reviews.</div></div>\${ts.map((t,i)=>\`<div class="card"><div class="card-title">Review \${i+1}</div><div class="field"><label class="field-label">Quote</label><textarea class="f-input" rows="4" oninput="C.testimonials[\${i}].text=this.value">\${e(t.text)}</textarea></div><div class="field"><label class="field-label">Name</label><input class="f-input" type="text" value="\${e(t.name)}" oninput="C.testimonials[\${i}].name=this.value"/></div></div>\`).join('')}\`}
 function faqsSection(){const faqs=C.faqs||[];return\`<div class="sec-header"><div class="sec-title">FAQs</div><div class="sec-desc">The questions accordion.</div></div>\${faqs.map((f,i)=>\`<div class="card"><div class="card-title">Question \${i+1}</div><div class="field"><label class="field-label">Question</label><input class="f-input" type="text" value="\${e(f.q)}" oninput="C.faqs[\${i}].q=this.value"/></div><div class="field"><label class="field-label">Answer</label><textarea class="f-input" rows="4" oninput="C.faqs[\${i}].a=this.value">\${e(f.a)}</textarea></div></div>\`).join('')}\`}
+function htmlSection(){if(!C.custom)C.custom={html:'',css:'',js:''};return\`<div class="sec-header"><div class="sec-title">HTML Editor</div><div class="sec-desc">Add custom HTML to the bottom of your page. Use this for embedding Google Maps, chat widgets, booking tools, or anything else.</div></div><div class="card"><div class="card-title">🧩 Custom HTML block</div><div class="field"><label class="field-label">Paste any HTML here — it will be added to your live site automatically</label><div class="code-wrap"><span class="code-lang">HTML</span><textarea class="code-editor" rows="14" placeholder="&lt;!-- Example: embed a Google Map --&gt;&#10;&lt;div style=&quot;margin:40px 0&quot;&gt;&#10;  &lt;iframe src=&quot;...&quot; width=&quot;100%&quot; height=&quot;400&quot;&gt;&lt;/iframe&gt;&#10;&lt;/div&gt;" oninput="C.custom.html=this.value" onkeydown="tabKey(event)">\${e(C.custom.html)}</textarea></div><div class="field-hint">Supports iframes, divs, scripts — anything valid HTML. Changes go live after you click Save.</div></div></div>\`}
+function codeSection(){if(!C.custom)C.custom={html:'',css:'',js:''};return\`<div class="sec-header"><div class="sec-title">CSS &amp; JavaScript</div><div class="sec-desc">Add custom styles or scripts. Great for tweaking colors, fonts, adding analytics, or live chat.</div></div><div class="card"><div class="card-title">🎨 Custom CSS</div><div class="field"><label class="field-label">Styles injected into the &lt;head&gt; of your page</label><div class="code-wrap"><span class="code-lang">CSS</span><textarea class="code-editor" rows="10" placeholder="/* Example: change the green color */&#10;:root { --green: #0d9488; }&#10;&#10;/* Example: bigger hero text */&#10;.hero h1 { font-size: 72px; }" oninput="C.custom.css=this.value" onkeydown="tabKey(event)">\${e(C.custom.css)}</textarea></div></div></div><div class="card"><div class="card-title">⚡ Custom JavaScript</div><div class="field"><label class="field-label">Scripts injected before &lt;/body&gt; — analytics, chat, tracking, etc.</label><div class="code-wrap"><span class="code-lang">JS</span><textarea class="code-editor" rows="10" placeholder="// Example: Google Analytics&#10;window.dataLayer = window.dataLayer || [];&#10;&#10;// Example: show an alert on load&#10;// alert('Welcome!');" oninput="C.custom.js=this.value" onkeydown="tabKey(event)">\${e(C.custom.js)}</textarea></div></div></div>\`}
+function tabKey(e){if(e.key==='Tab'){e.preventDefault();const s=e.target.selectionStart,en=e.target.selectionEnd;e.target.value=e.target.value.substring(0,s)+'  '+e.target.value.substring(en);e.target.selectionStart=e.target.selectionEnd=s+2}}
 async function saveAll(){const btn=document.getElementById('save-btn');const msg=document.getElementById('save-msg');btn.disabled=true;btn.textContent='Saving...';try{const res=await fetch('/cms/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(C)});if(res.ok){showToast('Saved! Your site is updated.','ok');msg.textContent='All changes saved.';msg.className='save-msg ok'}else{showToast('Save failed. Try again.','err');msg.textContent='Save failed.';msg.className='save-msg err'}}catch{showToast('Network error. Try again.','err')}btn.disabled=false;btn.textContent='Save changes'}
 function showToast(msg,type){const t=document.getElementById('toast');t.textContent=msg;t.className='toast show '+type;setTimeout(()=>t.className='toast',3500)}
 render('hero');
@@ -342,6 +357,23 @@ export default {
     // Admin dashboard
     if (url.pathname.startsWith('/cms')) {
       return handleCms(request, env);
+    }
+
+    // Inject custom CSS/JS/HTML into the main page
+    if ((url.pathname === '/' || url.pathname === '/index.html') && request.method === 'GET') {
+      const assetRes = await env.ASSETS.fetch(request);
+      try {
+        const content = await env.CONTENT.get('site_content', { type: 'json' });
+        const custom = content?.custom;
+        if (custom && (custom.css || custom.js || custom.html)) {
+          let html = await assetRes.text();
+          if (custom.css) html = html.replace('</head>', `<style>${custom.css}</style></head>`);
+          if (custom.html) html = html.replace('</body>', `${custom.html}\n</body>`);
+          if (custom.js) html = html.replace('</body>', `<script>${custom.js}<\/script>\n</body>`);
+          return new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' } });
+        }
+      } catch {}
+      return assetRes;
     }
 
     // Everything else — serve static assets
