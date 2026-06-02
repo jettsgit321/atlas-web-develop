@@ -250,8 +250,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;background:
     <button class="nav-btn" onclick="nav('seo',this)"><span class="nav-icon">🔍</span><span class="nav-label">SEO</span></button>
     <div class="sidebar-divider"></div>
     <div class="sidebar-section">Advanced</div>
-    <button class="nav-btn" onclick="nav('html',this)"><span class="nav-icon">🧩</span><span class="nav-label">HTML Editor</span></button>
+    <button class="nav-btn" onclick="nav('html',this)"><span class="nav-icon">🧩</span><span class="nav-label">HTML Blocks</span></button>
     <button class="nav-btn" onclick="nav('code',this)"><span class="nav-icon">💻</span><span class="nav-label">CSS &amp; JS</span></button>
+    <button class="nav-btn" onclick="nav('fulleditor',this)"><span class="nav-icon">⌨️</span><span class="nav-label">Full Editor</span></button>
     <div class="sidebar-divider"></div>
     <div class="sidebar-section">Account</div>
     <button class="nav-btn" onclick="nav('password',this)"><span class="nav-icon">🔒</span><span class="nav-label">Change Password</span></button>
@@ -264,7 +265,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;background:
 const C=${c};let pTab='landing';
 function e(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function nav(name,btn){document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render(name)}
-function render(name){const el=document.getElementById('main');if(name==='hero')el.innerHTML=heroSection();else if(name==='services')el.innerHTML=servicesSection();else if(name==='pricing')el.innerHTML=pricingSection();else if(name==='testimonials')el.innerHTML=testimonialsSection();else if(name==='faqs')el.innerHTML=faqsSection();else if(name==='contact')el.innerHTML=contactSection();else if(name==='hours')el.innerHTML=hoursSection();else if(name==='stats')el.innerHTML=statsSection();else if(name==='announcement')el.innerHTML=announcementSection();else if(name==='seo')el.innerHTML=seoSection();else if(name==='html')el.innerHTML=htmlSection();else if(name==='code')el.innerHTML=codeSection();else if(name==='password')el.innerHTML=passwordSection()}
+function render(name){const el=document.getElementById('main');if(name==='hero')el.innerHTML=heroSection();else if(name==='services')el.innerHTML=servicesSection();else if(name==='pricing')el.innerHTML=pricingSection();else if(name==='testimonials')el.innerHTML=testimonialsSection();else if(name==='faqs')el.innerHTML=faqsSection();else if(name==='contact')el.innerHTML=contactSection();else if(name==='hours')el.innerHTML=hoursSection();else if(name==='stats')el.innerHTML=statsSection();else if(name==='announcement')el.innerHTML=announcementSection();else if(name==='seo')el.innerHTML=seoSection();else if(name==='html')el.innerHTML=htmlSection();else if(name==='code')el.innerHTML=codeSection();else if(name==='password')el.innerHTML=passwordSection();else if(name==='fulleditor'){el.innerHTML=fullEditorSection();loadFullEditor();}}
 function heroSection(){const h=C.hero||{};return\`<div class="sec-header"><div class="sec-title">Hero</div><div class="sec-desc">The first thing visitors see.</div></div><div class="card"><div class="card-title">Location tag</div><div class="field"><label class="field-label">Tag above headline</label><input class="f-input" type="text" value="\${e(h.tag)}" oninput="C.hero.tag=this.value"/></div></div><div class="card"><div class="card-title">Headline</div><div class="field"><label class="field-label">White part</label><input class="f-input" type="text" value="\${e(h.headlineWhite)}" oninput="C.hero.headlineWhite=this.value"/></div><div class="field"><label class="field-label">Green part</label><input class="f-input" type="text" value="\${e(h.headlineGreen)}" oninput="C.hero.headlineGreen=this.value"/></div></div><div class="card"><div class="card-title">Typewriter text</div><div class="field"><label class="field-label">Text that types out below the headline</label><textarea class="f-input" rows="3" oninput="C.hero.typewriter=this.value">\${e(h.typewriter)}</textarea></div></div>\`}
 function servicesSection(){const s=C.services||[];return\`<div class="sec-header"><div class="sec-title">Services</div><div class="sec-desc">The 3 numbered items.</div></div>\${s.map((sv,i)=>\`<div class="card"><div class="card-title">Item \${i+1}</div><div class="field"><label class="field-label">Title</label><input class="f-input" type="text" value="\${e(sv.title)}" oninput="C.services[\${i}].title=this.value"/></div><div class="field"><label class="field-label">Description</label><textarea class="f-input" rows="3" oninput="C.services[\${i}].desc=this.value">\${e(sv.desc)}</textarea></div></div>\`).join('')}\`}
 function pricingSection(){return\`<div class="sec-header"><div class="sec-title">Pricing</div><div class="sec-desc">Edit prices and features.</div></div><div class="tab-row"><button class="tab \${pTab==='landing'?'active':''}" onclick="pTab='landing';render('pricing')">Landing Page</button><button class="tab \${pTab==='standard'?'active':''}" onclick="pTab='standard';render('pricing')">Standard Site</button><button class="tab \${pTab==='full'?'active':''}" onclick="pTab='full';render('pricing')">Full Site</button></div>\${pricingCard(pTab)}\`}
@@ -289,6 +290,71 @@ function seoSection(){if(!C.seo)C.seo={title:'Local Business Websites | Atlas We
 function passwordSection(){return\`<div class="sec-header"><div class="sec-title">Change Password</div><div class="sec-desc">Update your admin login credentials.</div></div><div class="card"><div class="card-title">🔒 New password</div><div id="pw-msg"></div><form onsubmit="changePw(event)"><div class="field"><label class="field-label">Current password</label><input class="f-input" type="password" id="pw-current" required/></div><div class="field"><label class="field-label">New password</label><input class="f-input" type="password" id="pw-new" required/></div><div class="field"><label class="field-label">Confirm new password</label><input class="f-input" type="password" id="pw-confirm" required/></div><button type="submit" class="save-btn" style="margin-top:8px">Update password</button></form></div>\`}
 
 async function changePw(e){e.preventDefault();const cur=document.getElementById('pw-current').value;const nw=document.getElementById('pw-new').value;const cf=document.getElementById('pw-confirm').value;const msg=document.getElementById('pw-msg');if(nw!==cf){msg.innerHTML='<div style="background:#fef2f2;border:1px solid #fecaca;color:#dc2626;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px">Passwords do not match.</div>';return;}if(nw.length<3){msg.innerHTML='<div style="background:#fef2f2;border:1px solid #fecaca;color:#dc2626;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px">Password must be at least 3 characters.</div>';return;}try{const res=await fetch('/cms/change-password',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({current:cur,newPassword:nw})});const txt=await res.text();if(res.ok){msg.innerHTML='<div style="background:#f0fdf4;border:1px solid #bbf7d0;color:#16a34a;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px;font-weight:600">Password updated successfully.</div>';document.getElementById('pw-current').value='';document.getElementById('pw-new').value='';document.getElementById('pw-confirm').value='';}else{msg.innerHTML='<div style="background:#fef2f2;border:1px solid #fecaca;color:#dc2626;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px">'+txt+'</div>';}}catch{msg.innerHTML='<div style="background:#fef2f2;border:1px solid #fecaca;color:#dc2626;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px">Network error. Try again.</div>';}}
+
+function fullEditorSection(){return\`<div class="sec-header"><div class="sec-title">Full HTML Editor</div><div class="sec-desc">Edit the complete source code of your site. <strong>Be careful</strong> — saving here goes live instantly and overrides all CMS text edits. Use Reset to go back to the original.</div></div>
+<div class="card" style="padding:0;overflow:hidden;border-color:#e5e7eb">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:#1a1d23;border-bottom:1px solid #2d3139">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:10px;height:10px;border-radius:50%;background:#ef4444"></div>
+      <div style="width:10px;height:10px;border-radius:50%;background:#f59e0b"></div>
+      <div style="width:10px;height:10px;border-radius:50%;background:#22c55e"></div>
+      <span style="font-size:12px;color:#6b7280;margin-left:6px;font-family:monospace">index.html</span>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button onclick="resetFullHtml()" style="background:transparent;border:1px solid #4b5563;border-radius:7px;padding:6px 14px;font-size:12px;font-weight:600;color:#9ca3af;cursor:pointer;font-family:inherit;transition:all .15s" onmouseover="this.style.borderColor='#ef4444';this.style.color='#ef4444'" onmouseout="this.style.borderColor='#4b5563';this.style.color='#9ca3af'">↩ Reset to original</button>
+      <button onclick="saveFullHtml()" id="fe-save-btn" style="background:linear-gradient(135deg,#15803d,#16a34a);border:none;border-radius:7px;padding:6px 16px;font-size:12px;font-weight:600;color:#fff;cursor:pointer;font-family:inherit;box-shadow:0 2px 8px rgba(22,163,74,.3)">Save &amp; go live</button>
+    </div>
+  </div>
+  <div id="fe-loading" style="background:#1a1d23;color:#6b7280;padding:40px;text-align:center;font-family:monospace;font-size:13px">Loading editor...</div>
+  <div id="full-editor-wrap" style="display:none"></div>
+</div>
+<div id="fe-status" style="margin-top:10px;font-size:13px;color:#9ca3af"></div>\`}
+
+async function loadFullEditor(){
+  if(window._feLoaded){initCM();return;}
+  window._feLoaded=true;
+  const loadCSS=href=>{const l=document.createElement('link');l.rel='stylesheet';l.href=href;document.head.appendChild(l);};
+  const loadJS=src=>new Promise(res=>{const s=document.createElement('script');s.src=src;s.onload=res;document.head.appendChild(s);});
+  loadCSS('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css');
+  loadCSS('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css');
+  await loadJS('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js');
+  await loadJS('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js');
+  await loadJS('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js');
+  await loadJS('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js');
+  await loadJS('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js');
+  initCM();
+}
+
+async function initCM(){
+  const wrap=document.getElementById('full-editor-wrap');
+  const loading=document.getElementById('fe-loading');
+  if(!wrap||!window.CodeMirror)return;
+  const res=await fetch('/cms/get-html');
+  const html=await res.text();
+  wrap.style.display='block';
+  if(loading)loading.style.display='none';
+  if(window._cm){window._cm.setValue(html);return;}
+  window._cm=CodeMirror(wrap,{value:html,mode:'htmlmixed',theme:'dracula',lineNumbers:true,lineWrapping:true,tabSize:2,indentWithTabs:false,extraKeys:{'Ctrl-S':saveFullHtml,'Cmd-S':saveFullHtml}});
+  window._cm.setSize('100%','680px');
+}
+
+async function saveFullHtml(){
+  const btn=document.getElementById('fe-save-btn');
+  const status=document.getElementById('fe-status');
+  if(!window._cm)return;
+  if(btn)btn.textContent='Saving...';
+  const res=await fetch('/cms/save-html',{method:'POST',headers:{'Content-Type':'text/plain'},body:window._cm.getValue()});
+  if(res.ok){showToast('Page saved and live!','ok');if(status)status.textContent='Last saved: '+new Date().toLocaleTimeString();}
+  else showToast('Save failed. Try again.','err');
+  if(btn)btn.textContent='Save & go live';
+}
+
+async function resetFullHtml(){
+  if(!confirm('Reset to original? This removes all your code edits.'))return;
+  const res=await fetch('/cms/reset-html',{method:'POST'});
+  if(res.ok){showToast('Reset to original.','ok');window._feLoaded=false;window._cm=null;initCM();}
+  else showToast('Reset failed.','err');
+}
 
 function htmlSection(){if(!C.custom)C.custom={html:'',css:'',js:''};return\`<div class="sec-header"><div class="sec-title">HTML Editor</div><div class="sec-desc">Add custom HTML to the bottom of your page. Use this for embedding Google Maps, chat widgets, booking tools, or anything else.</div></div><div class="card"><div class="card-title">🧩 Custom HTML block</div><div class="field"><label class="field-label">Paste any HTML here — it will be added to your live site automatically</label><div class="code-wrap"><span class="code-lang">HTML</span><textarea class="code-editor" rows="14" placeholder="&lt;!-- Example: embed a Google Map --&gt;&#10;&lt;div style=&quot;margin:40px 0&quot;&gt;&#10;  &lt;iframe src=&quot;...&quot; width=&quot;100%&quot; height=&quot;400&quot;&gt;&lt;/iframe&gt;&#10;&lt;/div&gt;" oninput="C.custom.html=this.value" onkeydown="tabKey(event)">\${e(C.custom.html)}</textarea></div><div class="field-hint">Supports iframes, divs, scripts — anything valid HTML. Changes go live after you click Save.</div></div></div>\`}
 function codeSection(){if(!C.custom)C.custom={html:'',css:'',js:''};return\`<div class="sec-header"><div class="sec-title">CSS &amp; JavaScript</div><div class="sec-desc">Add custom styles or scripts. Great for tweaking colors, fonts, adding analytics, or live chat.</div></div><div class="card"><div class="card-title">🎨 Custom CSS</div><div class="field"><label class="field-label">Styles injected into the &lt;head&gt; of your page</label><div class="code-wrap"><span class="code-lang">CSS</span><textarea class="code-editor" rows="10" placeholder="/* Example: change the green color */&#10;:root { --green: #0d9488; }&#10;&#10;/* Example: bigger hero text */&#10;.hero h1 { font-size: 72px; }" oninput="C.custom.css=this.value" onkeydown="tabKey(event)">\${e(C.custom.css)}</textarea></div></div></div><div class="card"><div class="card-title">⚡ Custom JavaScript</div><div class="field"><label class="field-label">Scripts injected before &lt;/body&gt; — analytics, chat, tracking, etc.</label><div class="code-wrap"><span class="code-lang">JS</span><textarea class="code-editor" rows="10" placeholder="// Example: Google Analytics&#10;window.dataLayer = window.dataLayer || [];&#10;&#10;// Example: show an alert on load&#10;// alert('Welcome!');" oninput="C.custom.js=this.value" onkeydown="tabKey(event)">\${e(C.custom.js)}</textarea></div></div></div>\`}
@@ -342,6 +408,26 @@ async function handleCms(request, env) {
 
   if (path === 'change-password' && method === 'POST') {
     return handleChangePassword(request, env);
+  }
+
+  if (path === 'get-html' && method === 'GET') {
+    const custom = await env.CONTENT.get('custom_page_html');
+    if (custom) return new Response(custom, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+    const asset = await env.ASSETS.fetch(new Request('https://atlas-web-develop.com/'));
+    const html = await asset.text();
+    return new Response(html, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+  }
+
+  if (path === 'save-html' && method === 'POST') {
+    const html = await request.text();
+    if (!html || html.length < 50) return new Response('Invalid', { status: 400 });
+    await env.CONTENT.put('custom_page_html', html);
+    return new Response('OK');
+  }
+
+  if (path === 'reset-html' && method === 'POST') {
+    await env.CONTENT.delete('custom_page_html');
+    return new Response('OK');
   }
 
   return new Response('Not found', { status: 404 });
@@ -433,6 +519,14 @@ export default {
     // Admin dashboard
     if (url.pathname.startsWith('/cms')) {
       return handleCms(request, env);
+    }
+
+    // Check for custom HTML saved from full editor
+    if ((url.pathname === '/' || url.pathname === '/index.html') && request.method === 'GET') {
+      const customHtml = await env.CONTENT.get('custom_page_html');
+      if (customHtml) {
+        return new Response(customHtml, { headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' } });
+      }
     }
 
     // Serve static assets — inject CMS content into any HTML response
