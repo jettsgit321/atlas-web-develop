@@ -1,7 +1,0 @@
-name = "atlas-web-develop"
-pages_build_output_dir = "."
-compatibility_date = "2024-01-01"
-
-[[kv_namespaces]]
-binding = "CONTENT"
-id = "c18bbfef1a914cd39ac00fcc9303c2c6"
