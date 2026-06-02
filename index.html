@@ -1175,8 +1175,8 @@ document.getElementById('contact-form').addEventListener('submit', async e => {
           const delays = [2.9, 3.05, 3.2, 3.35, 3.5, 3.65, 3.8, 3.95];
           let html = '';
           words.forEach((w, i) => {
-            const space = i > 0 ? ' ' : '';
-            html += `<span class="hero-word" style="animation-delay:${delays[i] || (2.9 + i * 0.15)}s">${space}${w}</span>`;
+            if (i > 0) html += ' ';
+            html += `<span class="hero-word" style="animation-delay:${delays[i] || (2.9 + i * 0.15)}s">${w}</span>`;
           });
           html += '<br>';
           html += `<span class="hero-word green" style="animation-delay:${delays[words.length] || 3.5}s">${green}</span>`;
