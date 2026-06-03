@@ -512,7 +512,7 @@ async function handleSetup(request, env) {
   const password = data.get('password') || '';
   const password2 = data.get('password2') || '';
   if (username.length < 2) return pageHtml(setupPage('Username must be at least 2 characters.'));
-  if (password.length < 3) return pageHtml(setupPage('Password must be at least 3 characters.'));
+  if (password.length < 10) return pageHtml(setupPage('Password must be at least 3 characters.'));
   if (password !== password2) return pageHtml(setupPage('Passwords do not match.'));
   const saltBytes = new Uint8Array(16);
   crypto.getRandomValues(saltBytes);
@@ -636,7 +636,7 @@ export default {
       if (content.bizChips) injectData.bizChips = content.bizChips;
       if (content.sectionHeadings) injectData.sectionHeadings = content.sectionHeadings;
       if (content.footer) injectData.footer = content.footer;
-      const injectScript = `<script>(function(){const D=${JSON.stringify(injectData)};window.__CMS=D;
+      const injectScript = `<script>(function(){const D=${JSON.stringify(injectData).replace(/<\/script>/gi, '<\\/script>')};window.__CMS=D;
 function gi(id){return document.getElementById(id);}
 function st(id,val){var el=gi(id);if(el&&val!==undefined)el.textContent=val;}
 if(D.hero){var h=D.hero;st('cms-hero-tag',h.tag);var h1=gi('cms-hero-h1');if(h1&&h.headlineWhite){var ws=h.headlineWhite.split(' ');var gs=h.headlineGreen||'';var bd=2.9;var html='';ws.forEach(function(w,i){html+='<span class="hero-word" style="animation-delay:'+(bd+i*0.15)+'s">'+w+'</span> ';});html+='<span class="hero-word green" style="animation-delay:'+(bd+ws.length*0.15)+'s"> '+gs+'</span>';h1.innerHTML=html;}}
