@@ -220,6 +220,31 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;background:
 .code-editor::placeholder{color:#4b5563}
 .sidebar-divider{height:1px;background:rgba(255,255,255,.07);margin:8px 4px}
 @media(max-width:768px){.sidebar{display:none}.main{padding:20px}.field-row{grid-template-columns:1fr}}
+/* Theme toggle btn */
+.theme-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:7px 11px;font-size:16px;cursor:pointer;transition:all .15s;line-height:1;color:rgba(255,255,255,.8)}
+.theme-btn:hover{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.3)}
+/* Dark mode */
+body.dark{background:#0f1117;color:#e5e7eb}
+body.dark .card{background:#1a1d23;border-color:#2d3139;box-shadow:none}
+body.dark .card-title{border-bottom-color:#2d3139;color:#6b7280}
+body.dark .sec-title{color:#f3f4f6}
+body.dark .sec-desc{color:#9ca3af}
+body.dark .field-label{color:#d1d5db}
+body.dark .field-hint{color:#6b7280}
+body.dark .f-input{background:#252931;border-color:#374151;color:#e5e7eb}
+body.dark .f-input:focus{border-color:#16a34a;background:#1e2530;box-shadow:0 0 0 3px rgba(22,163,74,.15)}
+body.dark .tab{background:#1a1d23;border-color:#374151;color:#9ca3af;box-shadow:none}
+body.dark .tab.active{background:linear-gradient(135deg,#15803d,#16a34a);border-color:transparent;color:#fff}
+body.dark .save-bar{background:#1a1d23;border-top-color:#2d3139;box-shadow:0 -2px 12px rgba(0,0,0,.4)}
+body.dark .save-msg{color:#6b7280}
+body.dark .save-msg.ok{color:#4ade80}
+body.dark .add-btn{background:#0a2e1e;border-color:#166534;color:#4ade80}
+body.dark .add-btn:hover{background:#14532d;border-color:#22c55e}
+body.dark .del-btn{border-color:#374151;color:#6b7280}
+body.dark .del-btn:hover{border-color:#fca5a5;color:#dc2626;background:#2a1515}
+body.dark .sidebar-divider{background:rgba(255,255,255,.07)}
+body.dark .view-link{color:rgba(255,255,255,.7)}
+body.dark .logout-btn{color:rgba(255,255,255,.7)}
 </style></head><body>
 <div class="topbar">
   <div class="brand">
@@ -227,6 +252,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;background:
     <div><div class="brand-name">Atlas Admin</div><div class="brand-sub">atlas-web-develop.com</div></div>
   </div>
   <div class="topbar-right">
+    <button class="theme-btn" id="theme-btn" onclick="toggleTheme()" title="Toggle dark/light mode">🌙</button>
     <a href="https://atlas-web-develop.com" target="_blank" class="view-link">↗ View site</a>
     <form method="POST" action="/cms/logout" style="display:inline"><button class="logout-btn">Sign out</button></form>
   </div>
@@ -361,6 +387,9 @@ function codeSection(){if(!C.custom)C.custom={html:'',css:'',js:''};return\`<div
 function tabKey(e){if(e.key==='Tab'){e.preventDefault();const s=e.target.selectionStart,en=e.target.selectionEnd;e.target.value=e.target.value.substring(0,s)+'  '+e.target.value.substring(en);e.target.selectionStart=e.target.selectionEnd=s+2}}
 async function saveAll(){const btn=document.getElementById('save-btn');const msg=document.getElementById('save-msg');btn.disabled=true;btn.textContent='Saving...';try{const res=await fetch('/cms/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(C)});if(res.ok){showToast('Saved! Your site is updated.','ok');msg.textContent='All changes saved.';msg.className='save-msg ok'}else{showToast('Save failed. Try again.','err');msg.textContent='Save failed.';msg.className='save-msg err'}}catch{showToast('Network error. Try again.','err')}btn.disabled=false;btn.textContent='Save changes'}
 function showToast(msg,type){const t=document.getElementById('toast');t.textContent=msg;t.className='toast show '+type;setTimeout(()=>t.className='toast',3500)}
+function initTheme(){if(localStorage.getItem('atlas-theme')==='dark'){document.body.classList.add('dark');const b=document.getElementById('theme-btn');if(b)b.textContent='☀️';}}
+function toggleTheme(){const dark=document.body.classList.toggle('dark');localStorage.setItem('atlas-theme',dark?'dark':'light');const b=document.getElementById('theme-btn');if(b)b.textContent=dark?'☀️':'🌙';}
+initTheme();
 render('hero');
 </script></body></html>`;
 }
