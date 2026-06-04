@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Greenstone Landscape Co., Tulsa's Premier Outdoor Living</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --dark:    #0b160b;
+  --forest:  #152615;
+  --moss:    #1e3d1e;
+  --sage:    #4a7c40;
+  --leaf:    #6aab56;
+  --cream:   #f3edd8;
+  --warm:    #faf8f2;
+  --gold:    #c8a44a;
+  --gold2:   #e8c870;
+  --text:    #1a140a;
+  --muted:   #7a7060;
+  --border:  #e8e0cc;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--warm);color:var(--text);overflow-x:hidden}
+
+/* ── Grain overlay ── */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  opacity:.4;
+}
+
+/* ── Nav ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;height:72px;
+  background:rgba(11,22,11,.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  transition:background .3s;
+}
+.nav-logo{
+  font-family:'Playfair Display',serif;font-size:20px;font-weight:700;
+  color:var(--cream);letter-spacing:.5px;text-decoration:none;
+  display:flex;align-items:center;gap:10px;
+}
+.nav-logo-mark{
+  width:32px;height:32px;background:var(--gold);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:900;color:var(--dark);flex-shrink:0;
+}
+.nav-links{list-style:none;display:flex;align-items:center;gap:36px;margin:0;padding:0;height:72px}
+.nav-links li{list-style:none;margin:0;padding:0;display:flex;align-items:center;height:100%}
+.nav-links a{
+  font-size:13px;font-weight:500;color:rgba(243,237,216,.65);
+  text-decoration:none;letter-spacing:.3px;transition:color .2s;
+  display:flex;align-items:center;height:100%;padding:0;margin:0;
+  line-height:1;white-space:nowrap;
+}
+.nav-links a:hover{color:var(--cream)}
+.nav-cta{
+  background:var(--gold);color:var(--dark);
+  padding:10px 22px;border-radius:4px;
+  font-size:13px;font-weight:600;text-decoration:none;letter-spacing:.2px;
+  transition:background .2s,transform .15s;white-space:nowrap;
+}
+.nav-cta:hover{background:var(--gold2);transform:translateY(-1px)}
+
+/* ── Hero ── */
+.hero{
+  min-height:100vh;background:var(--dark);
+  display:flex;align-items:center;
+  position:relative;overflow:hidden;
+  padding:120px 48px 80px;
+}
+.hero-blob{
+  position:absolute;right:-120px;top:50%;transform:translateY(-50%);
+  width:680px;height:680px;border-radius:60% 40% 55% 45% / 50% 60% 40% 50%;
+  background:radial-gradient(ellipse at 40% 50%, #2d5a2d 0%, #1a3a1a 50%, transparent 80%);
+  opacity:.7;
+}
+.hero-blob2{
+  position:absolute;right:80px;bottom:-100px;
+  width:360px;height:360px;border-radius:40% 60% 45% 55% / 55% 45% 60% 40%;
+  background:radial-gradient(ellipse, #c8a44a22 0%, transparent 70%);
+  border:1px solid #c8a44a22;
+}
+.hero-ring{
+  position:absolute;right:200px;top:120px;
+  width:200px;height:200px;border-radius:50%;
+  border:1px solid rgba(200,164,74,.2);
+}
+.hero-dots{
+  position:absolute;left:40%;top:20%;
+  display:grid;grid-template-columns:repeat(6,1fr);gap:14px;opacity:.15;
+}
+.hero-dots span{display:block;width:3px;height:3px;border-radius:50%;background:var(--cream)}
+.hero-content{position:relative;z-index:2;max-width:680px}
+.hero-label{
+  font-family:'DM Mono',monospace;font-size:11px;font-weight:500;
+  color:var(--gold);letter-spacing:3px;text-transform:uppercase;
+  margin-bottom:28px;display:flex;align-items:center;gap:12px;
+}
+.hero-label::before{content:'';display:block;width:32px;height:1px;background:var(--gold)}
+.hero-h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(52px,6vw,80px);font-weight:900;
+  color:var(--cream);line-height:1.05;letter-spacing:-1px;
+  margin-bottom:28px;
+}
+.hero-h1 em{font-style:italic;color:var(--leaf)}
+.hero-p{
+  font-size:17px;color:rgba(243,237,216,.65);line-height:1.7;
+  max-width:480px;margin-bottom:44px;font-weight:300;
+}
+.hero-btns{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.btn-gold{
+  background:var(--gold);color:var(--dark);
+  padding:16px 36px;border-radius:4px;
+  font-size:15px;font-weight:600;text-decoration:none;letter-spacing:.2px;
+  transition:all .2s;display:inline-flex;align-items:center;gap:8px;
+}
+.btn-gold:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(200,164,74,.3)}
+.btn-ghost{
+  color:rgba(243,237,216,.7);font-size:15px;font-weight:500;
+  text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+  border-bottom:1px solid rgba(243,237,216,.2);padding-bottom:2px;
+  transition:color .2s,border-color .2s;
+}
+.btn-ghost:hover{color:var(--cream);border-color:rgba(243,237,216,.5)}
+.hero-phone{
+  position:absolute;bottom:48px;right:48px;z-index:2;
+  font-family:'DM Mono',monospace;font-size:13px;color:rgba(243,237,216,.4);
+  text-decoration:none;letter-spacing:1px;transition:color .2s;
+  display:flex;align-items:center;gap:8px;
+}
+.hero-phone::before{content:'';width:20px;height:1px;background:currentColor}
+.hero-phone:hover{color:rgba(243,237,216,.8)}
+.hero-scroll{
+  position:absolute;bottom:48px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;z-index:2;
+}
+.hero-scroll span{font-size:10px;letter-spacing:3px;color:rgba(243,237,216,.3);text-transform:uppercase;font-family:'DM Mono',monospace}
+.scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,rgba(243,237,216,.3),transparent);animation:scrollPulse 2s ease-in-out infinite}
+@keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(1)}50%{opacity:.7;transform:scaleY(1.1)}}
+
+/* ── Stats strip ── */
+.stats{
+  background:var(--forest);
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-top:1px solid rgba(255,255,255,.05);
+}
+.stat{
+  padding:40px 32px;text-align:center;
+  border-right:1px solid rgba(255,255,255,.05);
+  position:relative;
+}
+.stat:last-child{border-right:none}
+.stat-num{
+  font-family:'Playfair Display',serif;font-size:48px;font-weight:700;
+  color:var(--cream);line-height:1;margin-bottom:6px;
+  display:flex;align-items:flex-start;justify-content:center;gap:2px;
+}
+.stat-num sup{font-size:22px;margin-top:8px;color:var(--gold)}
+.stat-num span.plus{color:var(--gold);font-size:32px;margin-top:4px}
+.stat-label{font-size:12px;color:rgba(243,237,216,.45);letter-spacing:1.5px;text-transform:uppercase;font-family:'DM Mono',monospace}
+
+/* ── Section commons ── */
+.section{max-width:1100px;margin:0 auto;padding:0 48px}
+.sec-eyebrow{
+  font-family:'DM Mono',monospace;font-size:11px;font-weight:500;
+  color:var(--sage);letter-spacing:3px;text-transform:uppercase;
+  margin-bottom:16px;display:flex;align-items:center;gap:12px;
+}
+.sec-eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--sage)}
+.sec-h2{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(36px,4vw,54px);font-weight:700;
+  color:var(--text);line-height:1.1;letter-spacing:-.5px;
+  margin-bottom:16px;
+}
+.sec-h2.light{color:var(--cream)}
+.sec-p{font-size:16px;color:var(--muted);line-height:1.7;max-width:520px;font-weight:300}
+
+/* ── Services ── */
+.services-wrap{padding:100px 0;background:var(--warm)}
+.services-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
+  margin-top:60px;background:var(--border);
+  border:1px solid var(--border);border-radius:2px;overflow:hidden;
+}
+.service-card{
+  background:var(--warm);padding:44px 36px;
+  transition:background .25s;position:relative;overflow:hidden;
+}
+.service-card::before{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+  background:linear-gradient(to right,var(--sage),var(--gold));
+  transform:scaleX(0);transform-origin:left;transition:transform .35s ease;
+}
+.service-card:hover{background:#f0ebe0}
+.service-card:hover::before{transform:scaleX(1)}
+.service-icon{
+  width:52px;height:52px;border-radius:12px;
+  background:linear-gradient(135deg,var(--forest),var(--moss));
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;margin-bottom:24px;
+  box-shadow:0 4px 16px rgba(21,38,21,.2);
+}
+.service-title{
+  font-family:'Playfair Display',serif;font-size:22px;font-weight:600;
+  color:var(--text);margin-bottom:12px;letter-spacing:-.2px;
+}
+.service-desc{font-size:14px;color:var(--muted);line-height:1.7;font-weight:300;margin-bottom:20px}
+.service-link{
+  font-size:13px;font-weight:500;color:var(--sage);
+  text-decoration:none;display:inline-flex;align-items:center;gap:6px;
+  letter-spacing:.2px;
+}
+.service-link:hover{color:var(--text)}
+
+/* ── Gallery ── */
+.gallery-wrap{padding:100px 0;background:var(--dark);position:relative;overflow:hidden}
+.gallery-wrap::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 70% 50%,rgba(45,90,45,.3) 0%,transparent 60%);
+}
+.gallery-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:48px;position:relative}
+.gallery-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  grid-template-rows:240px 240px;
+  gap:12px;position:relative;
+}
+.gal-item{border-radius:4px;overflow:hidden;position:relative;cursor:pointer}
+.gal-item:first-child{grid-column:1/2;grid-row:1/3}
+.gal-item:nth-child(4){grid-column:3/4;grid-row:1/3}
+.gal-photo{
+  width:100%;height:100%;
+  transition:transform .5s ease;
+}
+.gal-item:hover .gal-photo{transform:scale(1.04)}
+.gal-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(11,22,11,.8) 0%,transparent 50%);
+  opacity:0;transition:opacity .3s;
+  display:flex;align-items:flex-end;padding:20px;
+}
+.gal-item:hover .gal-overlay{opacity:1}
+.gal-label{font-size:13px;font-weight:500;color:var(--cream);letter-spacing:.3px}
+
+/* Simulated garden photos via CSS */
+.photo-a{background:linear-gradient(160deg,#1a3a1a 0%,#2d5a2d 30%,#4a7c40 55%,#3a6a30 75%,#1a3a1a 100%)}
+.photo-b{background:linear-gradient(135deg,#0d2a0d 0%,#1e4a1e 40%,#6aab56 70%,#4a8a3a 90%,#1e3a1e 100%)}
+.photo-c{background:linear-gradient(180deg,#c8a44a33 0%,#2d5a2d 20%,#4a7c40 60%,#1a3a1a 100%)}
+.photo-d{background:linear-gradient(145deg,#1a3a1a 0%,#3a6a30 35%,#7ab648 55%,#2d5a2d 80%,#0d2a0d 100%)}
+.photo-e{background:linear-gradient(160deg,#0d1a0d 0%,#1e3a1e 40%,#3a7a30 65%,#c8a44a44 90%,#1a3a1a 100%)}
+
+/* Add subtle texture to photos */
+.gal-photo::after{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Ccircle cx='1' cy='1' r='.5' fill='rgba(255,255,255,.03)'/%3E%3C/svg%3E");
+}
+
+/* ── Why us ── */
+.why-wrap{padding:100px 0;background:var(--warm)}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-top:64px;align-items:center}
+.why-visual{
+  height:480px;border-radius:4px;position:relative;
+  background:linear-gradient(160deg,#152615 0%,#1e3d1e 40%,#2d5a2d 70%,#1a3a1a 100%);
+  overflow:hidden;
+}
+.why-visual::after{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='1' fill='rgba(200,164,74,.08)'/%3E%3C/svg%3E");
+}
+.why-badge{
+  position:absolute;bottom:32px;left:32px;right:32px;
+  background:rgba(11,22,11,.85);backdrop-filter:blur(8px);
+  border:1px solid rgba(200,164,74,.2);border-radius:8px;
+  padding:20px 24px;z-index:2;
+}
+.why-badge-title{
+  font-family:'Playfair Display',serif;font-size:22px;font-weight:700;
+  color:var(--cream);margin-bottom:4px;
+}
+.why-badge-sub{font-size:13px;color:rgba(243,237,216,.5);font-weight:300}
+.why-gold-ring{
+  position:absolute;top:40px;right:40px;
+  width:120px;height:120px;border-radius:50%;
+  border:1px solid rgba(200,164,74,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:28px;font-weight:900;
+  color:var(--gold);
+}
+.why-list{display:flex;flex-direction:column;gap:32px}
+.why-item{display:flex;gap:20px;align-items:flex-start}
+.why-num{
+  font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);
+  letter-spacing:2px;margin-top:4px;flex-shrink:0;font-weight:500;
+}
+.why-item-title{
+  font-family:'Playfair Display',serif;font-size:20px;font-weight:600;
+  color:var(--text);margin-bottom:6px;letter-spacing:-.2px;
+}
+.why-item-desc{font-size:14px;color:var(--muted);line-height:1.7;font-weight:300}
+
+/* ── Testimonials ── */
+.testi-wrap{padding:100px 0;background:var(--forest)}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
+.testi-card{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:8px;padding:36px 32px;position:relative;
+  transition:background .2s,border-color .2s;
+}
+.testi-card:hover{background:rgba(255,255,255,.07);border-color:rgba(200,164,74,.2)}
+.testi-stars{color:var(--gold);font-size:14px;letter-spacing:2px;margin-bottom:20px}
+.testi-quote{
+  font-family:'Playfair Display',serif;font-size:16px;font-style:italic;
+  color:rgba(243,237,216,.8);line-height:1.7;margin-bottom:24px;font-weight:400;
+}
+.testi-author{display:flex;align-items:center;gap:12px}
+.testi-avatar{
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,var(--sage),var(--moss));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:16px;font-weight:700;
+  color:var(--cream);flex-shrink:0;
+}
+.testi-name{font-size:14px;font-weight:600;color:var(--cream);margin-bottom:2px}
+.testi-role{font-size:12px;color:rgba(243,237,216,.4);font-weight:300}
+
+/* ── Pricing ── */
+.pricing-wrap{padding:100px 0;background:var(--warm)}
+.pricing-header{text-align:center;margin-bottom:56px}
+.pricing-header .sec-eyebrow{justify-content:center}
+.pricing-header .sec-eyebrow::before{display:none}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.pricing-card{
+  border:1px solid var(--border);border-radius:8px;padding:40px 32px;
+  background:#fff;position:relative;transition:transform .2s,box-shadow .2s;
+}
+.pricing-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(21,38,21,.1)}
+.pricing-card.featured{
+  background:var(--dark);border-color:transparent;
+  box-shadow:0 8px 32px rgba(11,22,11,.25);
+}
+.pricing-card.featured:hover{box-shadow:0 20px 60px rgba(11,22,11,.35)}
+.pricing-badge{
+  position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+  background:var(--gold);color:var(--dark);
+  font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  padding:5px 16px;border-radius:20px;white-space:nowrap;
+}
+.pricing-name{
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--sage);margin-bottom:20px;
+}
+.pricing-card.featured .pricing-name{color:rgba(243,237,216,.5)}
+.pricing-price{
+  font-family:'Playfair Display',serif;font-size:52px;font-weight:700;
+  color:var(--text);line-height:1;margin-bottom:4px;
+  display:flex;align-items:flex-start;gap:4px;
+}
+.pricing-card.featured .pricing-price{color:var(--cream)}
+.pricing-price sup{font-size:22px;margin-top:10px;color:var(--sage)}
+.pricing-card.featured .pricing-price sup{color:rgba(243,237,216,.5)}
+.pricing-recur{font-size:13px;color:var(--muted);margin-bottom:32px;font-weight:300}
+.pricing-card.featured .pricing-recur{color:rgba(243,237,216,.45)}
+.pricing-features{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:36px}
+.pricing-features li{
+  font-size:14px;color:var(--muted);font-weight:300;
+  display:flex;align-items:center;gap:10px;
+}
+.pricing-card.featured .pricing-features li{color:rgba(243,237,216,.65)}
+.pricing-features li::before{
+  content:'✓';width:20px;height:20px;border-radius:50%;
+  background:rgba(106,171,86,.12);color:var(--leaf);
+  font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.pricing-card.featured .pricing-features li::before{background:rgba(106,171,86,.2)}
+.btn-pricing{
+  display:block;text-align:center;padding:14px 24px;border-radius:4px;
+  font-size:14px;font-weight:600;text-decoration:none;letter-spacing:.2px;
+  transition:all .2s;border:1.5px solid var(--border);color:var(--text);
+}
+.btn-pricing:hover{border-color:var(--sage);color:var(--sage)}
+.btn-pricing.primary{
+  background:var(--gold);border-color:transparent;color:var(--dark);
+}
+.btn-pricing.primary:hover{background:var(--gold2);transform:translateY(-1px)}
+
+/* ── Contact ── */
+.contact-wrap{padding:100px 0;background:var(--dark);position:relative;overflow:hidden}
+.contact-wrap::before{
+  content:'';position:absolute;left:-200px;top:50%;transform:translateY(-50%);
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(45,90,45,.25) 0%,transparent 70%);
+}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;position:relative}
+.contact-info{padding-top:8px}
+.contact-detail{margin-bottom:28px}
+.contact-label{
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;
+  text-transform:uppercase;color:rgba(243,237,216,.35);margin-bottom:6px;
+}
+.contact-val{font-size:16px;color:var(--cream);font-weight:400}
+.contact-val a{color:var(--gold);text-decoration:none}
+.contact-val a:hover{color:var(--gold2)}
+.contact-form{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:40px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.form-group{margin-bottom:16px}
+.form-group:last-of-type{margin-bottom:24px}
+.form-label{
+  display:block;font-size:11px;font-weight:500;letter-spacing:1.5px;
+  text-transform:uppercase;color:rgba(243,237,216,.45);margin-bottom:8px;
+  font-family:'DM Mono',monospace;
+}
+.form-input,.form-select,.form-textarea{
+  width:100%;background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);border-radius:4px;
+  padding:13px 16px;font-size:14px;font-family:'DM Sans',sans-serif;
+  color:var(--cream);outline:none;transition:border-color .2s,background .2s;
+}
+.form-input:focus,.form-select:focus,.form-textarea:focus{
+  border-color:rgba(200,164,74,.5);background:rgba(255,255,255,.07);
+}
+.form-input::placeholder,.form-textarea::placeholder{color:rgba(243,237,216,.2)}
+.form-select{appearance:none;cursor:pointer}
+.form-select option{background:var(--dark);color:var(--cream)}
+.form-textarea{resize:vertical;min-height:120px;line-height:1.6}
+.btn-submit{
+  width:100%;background:var(--gold);color:var(--dark);
+  border:none;border-radius:4px;padding:16px;
+  font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;
+  cursor:pointer;letter-spacing:.3px;transition:all .2s;
+}
+.btn-submit:hover{background:var(--gold2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(200,164,74,.3)}
+
+/* ── Footer ── */
+footer{
+  background:var(--dark);border-top:1px solid rgba(255,255,255,.06);
+  padding:40px 48px;
+  display:flex;flex-direction:column;align-items:center;
+  gap:20px;text-align:center;
+}
+.footer-logo{
+  font-family:'Playfair Display',serif;font-size:18px;font-weight:700;
+  color:rgba(243,237,216,.5);text-decoration:none;
+}
+.footer-links{display:flex;align-items:center;gap:32px;flex-wrap:nowrap}
+.footer-links a{
+  font-size:13px;color:rgba(243,237,216,.3);text-decoration:none;
+  transition:color .2s;line-height:1;white-space:nowrap;
+}
+.footer-links a:hover{color:rgba(243,237,216,.7)}
+.footer-copy{font-size:12px;color:rgba(243,237,216,.2);font-family:'DM Mono',monospace}
+
+/* ── Service area strip ── */
+.area-strip{
+  background:var(--forest);padding:20px 48px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  border-top:1px solid rgba(255,255,255,.05);
+}
+.area-strip span{font-size:13px;color:rgba(243,237,216,.4);font-weight:300}
+.area-strip strong{color:rgba(243,237,216,.65);font-weight:500}
+.area-dot{color:rgba(243,237,216,.2);margin:0 4px}
+
+/* ── Reveal animations ── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+.reveal-delay-4{transition-delay:.4s}
+.reveal-delay-5{transition-delay:.5s}
+
+/* ── Responsive ── */
+@media(max-width:900px){
+  nav{padding:0 24px}
+  .nav-links{display:none}
+  .hero{padding:100px 24px 80px}
+  .hero-phone{right:24px}
+  .section{padding:0 24px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat{border-bottom:1px solid rgba(255,255,255,.05)}
+  .services-grid,.gallery-grid,.why-grid,.testi-grid,.pricing-grid,.contact-grid{grid-template-columns:1fr}
+  .gal-item:first-child,.gal-item:nth-child(4){grid-column:auto;grid-row:auto}
+  .gallery-grid{grid-template-rows:auto}
+  .gal-item{height:220px}
+  .why-visual{height:300px}
+  footer{padding:32px 24px}
+  .footer-links{flex-wrap:wrap;justify-content:center;gap:20px}
+  .form-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <div class="nav-logo-mark">G</div>
+    Greenstone Landscape Co.
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#gallery">Our Work</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="tel:9185550147" class="nav-cta">Call (918) 555-0147</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-blob"></div>
+  <div class="hero-blob2"></div>
+  <div class="hero-ring"></div>
+  <div class="hero-dots">
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="hero-content">
+    <div class="hero-label">Tulsa's Premier Landscape Company</div>
+    <h1 class="hero-h1">
+      Your property,<br/>
+      <em>perfectly</em><br/>
+      maintained.
+    </h1>
+    <p class="hero-p">Full-service lawn care and landscape design for homeowners across Tulsa and the surrounding area. No contracts, free estimates, satisfaction guaranteed.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-gold">Get a free estimate →</a>
+      <a href="#gallery" class="btn-ghost">See our work</a>
+    </div>
+  </div>
+  <a href="tel:9185550147" class="hero-phone">(918) 555-0147</a>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <div class="stat-num"><span>12</span><span class="plus">+</span></div>
+    <div class="stat-label">Years in Tulsa</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num"><span>340</span><span class="plus">+</span></div>
+    <div class="stat-label">Happy clients</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num"><sup>$</sup><span>0</span></div>
+    <div class="stat-label">Contract required</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num"><span>5</span><span class="plus">★</span></div>
+    <div class="stat-label">Average rating</div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services-wrap" id="services">
+  <div class="section">
+    <div class="sec-eyebrow reveal">What we do</div>
+    <h2 class="sec-h2 reveal reveal-delay-1">Complete outdoor care,<br/>start to finish.</h2>
+    <div class="services-grid" style="margin-top:56px">
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-icon">🌿</div>
+        <div class="service-title">Weekly Lawn Care</div>
+        <p class="service-desc">Mowing, edging, trimming, and blowing every week so your lawn always looks its best. Consistent crews, consistent results.</p>
+        <a href="#contact" class="service-link">Get a quote →</a>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-icon">🌳</div>
+        <div class="service-title">Landscape Design</div>
+        <p class="service-desc">Custom planting plans, bed installation, mulching, and full landscape redesigns that add real value to your property.</p>
+        <a href="#contact" class="service-link">Get a quote →</a>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <div class="service-icon">❄️</div>
+        <div class="service-title">Seasonal Services</div>
+        <p class="service-desc">Spring cleanup, fall leaf removal, aeration, overseeding, and winterization, everything your lawn needs all year long.</p>
+        <a href="#contact" class="service-link">Get a quote →</a>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-icon">💧</div>
+        <div class="service-title">Irrigation Systems</div>
+        <p class="service-desc">Installation, repair, and seasonal startup/shutdown for sprinkler systems. Smart controller upgrades available.</p>
+        <a href="#contact" class="service-link">Get a quote →</a>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <div class="service-icon">🌸</div>
+        <div class="service-title">Flower Bed Maintenance</div>
+        <p class="service-desc">Regular weeding, deadheading, fertilizing, and seasonal color rotations to keep your beds looking spectacular.</p>
+        <a href="#contact" class="service-link">Get a quote →</a>
+      </div>
+      <div class="service-card reveal reveal-delay-4">
+        <div class="service-icon">🪨</div>
+        <div class="service-title">Hardscaping</div>
+        <p class="service-desc">Patios, walkways, retaining walls, and decorative stone work that transforms your outdoor space into a living area.</p>
+        <a href="#contact" class="service-link">Get a quote →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-wrap" id="gallery">
+  <div class="section">
+    <div class="gallery-header">
+      <div>
+        <div class="sec-eyebrow reveal" style="color:rgba(106,171,86,.8)">Our work</div>
+        <h2 class="sec-h2 light reveal reveal-delay-1">Recent projects<br/>around Tulsa.</h2>
+      </div>
+      <a href="#contact" class="btn-ghost reveal reveal-delay-2" style="margin-bottom:8px">Request a consultation →</a>
+    </div>
+    <div class="gallery-grid">
+      <div class="gal-item">
+        <div class="gal-photo photo-a"></div>
+        <div class="gal-overlay"><span class="gal-label">Full Landscape Redesign, Broken Arrow</span></div>
+      </div>
+      <div class="gal-item">
+        <div class="gal-photo photo-b"></div>
+        <div class="gal-overlay"><span class="gal-label">Weekly Lawn Care, South Tulsa</span></div>
+      </div>
+      <div class="gal-item">
+        <div class="gal-photo photo-c"></div>
+        <div class="gal-overlay"><span class="gal-label">Flower Bed Installation, Jenks</span></div>
+      </div>
+      <div class="gal-item">
+        <div class="gal-photo photo-d"></div>
+        <div class="gal-overlay"><span class="gal-label">Stone Patio & Retaining Wall, Bixby</span></div>
+      </div>
+      <div class="gal-item">
+        <div class="gal-photo photo-e"></div>
+        <div class="gal-overlay"><span class="gal-label">Irrigation Installation, Owasso</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why-wrap">
+  <div class="section">
+    <div class="why-grid">
+      <div class="why-visual">
+        <div class="why-gold-ring">12<br/><span style="font-size:14px;font-weight:400">yrs</span></div>
+        <div class="why-badge">
+          <div class="why-badge-title">Locally owned &amp; operated</div>
+          <div class="why-badge-sub">Serving Bixby, Tulsa, and surrounding areas since 2012</div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-eyebrow reveal">Why Greenstone</div>
+        <h2 class="sec-h2 reveal reveal-delay-1">We treat your yard<br/>like it's our own.</h2>
+        <div class="why-list" style="margin-top:40px">
+          <div class="why-item reveal reveal-delay-1">
+            <div class="why-num">01</div>
+            <div>
+              <div class="why-item-title">No contracts, ever</div>
+              <p class="why-item-desc">Month-to-month service. Stay because you love the results, not because you're locked in. Cancel any time with no fees.</p>
+            </div>
+          </div>
+          <div class="why-item reveal reveal-delay-2">
+            <div class="why-num">02</div>
+            <div>
+              <div class="why-item-title">Same crew every visit</div>
+              <p class="why-item-desc">You'll recognize the people working on your property. Consistency means fewer mistakes and better attention to detail.</p>
+            </div>
+          </div>
+          <div class="why-item reveal reveal-delay-3">
+            <div class="why-num">03</div>
+            <div>
+              <div class="why-item-title">100% satisfaction promise</div>
+              <p class="why-item-desc">If something isn't right, we come back and fix it at no charge. No arguments, no runaround. That's our guarantee.</p>
+            </div>
+          </div>
+          <div class="why-item reveal reveal-delay-4">
+            <div class="why-num">04</div>
+            <div>
+              <div class="why-item-title">Fully licensed &amp; insured</div>
+              <p class="why-item-desc">$2M liability coverage and full workers' comp. You're protected, and so are our crews.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testi-wrap">
+  <div class="section">
+    <div class="sec-eyebrow reveal" style="color:rgba(106,171,86,.7)">Reviews</div>
+    <h2 class="sec-h2 light reveal reveal-delay-1">What our clients say.</h2>
+    <div class="testi-grid">
+      <div class="testi-card reveal reveal-delay-1">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"Greenstone has maintained our lawn for 3 years and it has never looked better. They're always on time, professional, and they actually care about the details."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">R</div>
+          <div>
+            <div class="testi-name">Robert &amp; Diane M.</div>
+            <div class="testi-role">Bixby, OK, Weekly lawn care</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-delay-2">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"We hired them to redesign our entire front and back yard. They finished on time, on budget, and the result was absolutely stunning. Neighbors stop and ask about it."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">T</div>
+          <div>
+            <div class="testi-name">Tracy H.</div>
+            <div class="testi-role">South Tulsa, Full landscape redesign</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-delay-3">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"Switched from another company and the difference was immediate. Greenstone actually shows up when scheduled, and the quality of the work is in a different league."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">K</div>
+          <div>
+            <div class="testi-name">Kevin &amp; Lisa P.</div>
+            <div class="testi-role">Jenks, OK, Lawn care + seasonal</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-wrap" id="pricing">
+  <div class="section">
+    <div class="pricing-header">
+      <div class="sec-eyebrow reveal">Pricing</div>
+      <h2 class="sec-h2 reveal reveal-delay-1">Simple, honest pricing.<br/>No surprises.</h2>
+      <p class="sec-p reveal reveal-delay-2" style="margin:0 auto;text-align:center">All plans include free estimates, no contracts, and our 100% satisfaction guarantee.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal reveal-delay-1">
+        <div class="pricing-name">Basic Care</div>
+        <div class="pricing-price"><sup>$</sup>89</div>
+        <div class="pricing-recur">per visit · no contract</div>
+        <ul class="pricing-features">
+          <li>Weekly mowing &amp; edging</li>
+          <li>Trimming &amp; blowing</li>
+          <li>Curb-strip maintenance</li>
+          <li>Post-visit cleanup</li>
+          <li>Free initial estimate</li>
+        </ul>
+        <a href="#contact" class="btn-pricing">Get started →</a>
+      </div>
+      <div class="pricing-card featured reveal reveal-delay-2">
+        <div class="pricing-badge">Most Popular</div>
+        <div class="pricing-name">Full Service</div>
+        <div class="pricing-price"><sup>$</sup>149</div>
+        <div class="pricing-recur">per visit · no contract</div>
+        <ul class="pricing-features">
+          <li>Everything in Basic Care</li>
+          <li>Flower bed weeding</li>
+          <li>Seasonal fertilization</li>
+          <li>Shrub &amp; hedge trimming</li>
+          <li>Leaf removal (fall)</li>
+          <li>Priority scheduling</li>
+        </ul>
+        <a href="#contact" class="btn-pricing primary">Get started →</a>
+      </div>
+      <div class="pricing-card reveal reveal-delay-3">
+        <div class="pricing-name">Estate Package</div>
+        <div class="pricing-price"><sup>$</sup>249</div>
+        <div class="pricing-recur">per visit · no contract</div>
+        <ul class="pricing-features">
+          <li>Everything in Full Service</li>
+          <li>Irrigation management</li>
+          <li>Seasonal color rotations</li>
+          <li>Custom landscape plan</li>
+          <li>Dedicated account manager</li>
+          <li>Monthly property report</li>
+        </ul>
+        <a href="#contact" class="btn-pricing">Get started →</a>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:28px;font-size:13px;color:var(--muted);font-weight:300">
+      Pricing based on average residential lot. Final price after free on-site estimate.
+    </p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-wrap" id="contact">
+  <div class="section">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="sec-eyebrow reveal" style="color:rgba(106,171,86,.7)">Get in touch</div>
+        <h2 class="sec-h2 light reveal reveal-delay-1">Get your free<br/>estimate today.</h2>
+        <p class="sec-p reveal reveal-delay-2" style="color:rgba(243,237,216,.5);margin-top:16px;margin-bottom:44px">Tell us about your property and we'll come out, take a look, and give you a quote, no charge, no pressure.</p>
+        <div class="contact-detail reveal reveal-delay-2">
+          <div class="contact-label">Phone</div>
+          <div class="contact-val"><a href="tel:9185550147">(918) 555-0147</a></div>
+        </div>
+        <div class="contact-detail reveal reveal-delay-3">
+          <div class="contact-label">Email</div>
+          <div class="contact-val"><a href="mailto:hello@greenstonelands.com">hello@greenstonelands.com</a></div>
+        </div>
+        <div class="contact-detail reveal reveal-delay-4">
+          <div class="contact-label">Hours</div>
+          <div class="contact-val" style="color:rgba(243,237,216,.65)">Mon–Fri 7am–6pm · Sat 8am–2pm</div>
+        </div>
+        <div class="contact-detail reveal reveal-delay-5">
+          <div class="contact-label">Service area</div>
+          <div class="contact-val" style="color:rgba(243,237,216,.65)">Tulsa · Bixby · Jenks · Broken Arrow · Owasso · Glenpool</div>
+        </div>
+      </div>
+      <div class="contact-form reveal reveal-delay-2">
+        <form>
+          <div class="form-row">
+            <div>
+              <label class="form-label">First name</label>
+              <input class="form-input" type="text" placeholder="John"/>
+            </div>
+            <div>
+              <label class="form-label">Last name</label>
+              <input class="form-input" type="text" placeholder="Smith"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone number</label>
+            <input class="form-input" type="tel" placeholder="(918) 000-0000"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Service you need</label>
+            <select class="form-select">
+              <option value="">Select a service...</option>
+              <option>Weekly Lawn Care</option>
+              <option>Landscape Design</option>
+              <option>Seasonal Cleanup</option>
+              <option>Irrigation</option>
+              <option>Flower Beds</option>
+              <option>Hardscaping</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tell us about your property</label>
+            <textarea class="form-textarea" placeholder="Lot size, current condition, anything we should know..."></textarea>
+          </div>
+          <button type="submit" class="btn-submit">Send request →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AREA STRIP -->
+<div class="area-strip">
+  <span>Serving</span>
+  <strong>Tulsa</strong><span class="area-dot">·</span>
+  <strong>Bixby</strong><span class="area-dot">·</span>
+  <strong>Jenks</strong><span class="area-dot">·</span>
+  <strong>Broken Arrow</strong><span class="area-dot">·</span>
+  <strong>Owasso</strong><span class="area-dot">·</span>
+  <strong>Sand Springs</strong><span class="area-dot">·</span>
+  <strong>Glenpool</strong>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a href="/" class="footer-logo">Greenstone Landscape Co.</a>
+  <div class="footer-links">
+    <a href="#services">Services</a>
+    <a href="#gallery">Our Work</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 Greenstone Landscape Co. · Tulsa, OK</div>
+</footer>
+
+<script>
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }});
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Nav background on scroll
+window.addEventListener('scroll', () => {
+  document.querySelector('nav').style.background =
+    window.scrollY > 60 ? 'rgba(11,22,11,.98)' : 'rgba(11,22,11,.92)';
+});
+
+// Stat counter animation
+function animateNum(el, target) {
+  let start = 0, dur = 1600, startTime = null;
+  function step(ts) {
+    if(!startTime) startTime = ts;
+    const p = Math.min((ts - startTime) / dur, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(ease * target);
+    if(p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+const statObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      const nums = e.target.querySelectorAll('.stat-num span');
+      nums.forEach(n => {
+        const val = parseInt(n.textContent);
+        if(!isNaN(val) && val > 0) animateNum(n, val);
+      });
+      statObs.unobserve(e.target);
+    }
+  });
+},{threshold:0.3});
+document.querySelectorAll('.stat').forEach(el => statObs.observe(el));
+
+// Form submit
+document.querySelector('form').addEventListener('submit', e => {
+  e.preventDefault();
+  const btn = e.target.querySelector('.btn-submit');
+  btn.textContent = 'Request sent ✓';
+  btn.style.background = '#4a7c40';
+  btn.disabled = true;
+});
+</script>
+</body>
+</html>
