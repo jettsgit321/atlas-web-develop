@@ -606,6 +606,7 @@ export default {
     const assetRes = await env.ASSETS.fetch(request);
     const ct = assetRes.headers.get('content-type') || '';
     if (!ct.includes('text/html') || request.method !== 'GET') return assetRes;
+    if (url.pathname.startsWith('/demos/')) return assetRes;
 
     try {
       const content = await env.CONTENT.get('site_content', { type: 'json' });
